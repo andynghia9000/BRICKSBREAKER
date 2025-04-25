@@ -3,33 +3,6 @@
 
 
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/@farcade/game-sdk@latest/dist/index.min.js">
-// FARCADE SDK INTEGRATION
-window.FarcadeSDK?.singlePlayer?.actions?.ready?.();
-
-function callGameOver() {
-  window.FarcadeSDK?.singlePlayer?.actions?.gameOver?.({ score });
-}
-
-function importantHit() {
-  window.FarcadeSDK?.singlePlayer?.actions?.hapticFeedback?.();
-}
-
-window.FarcadeSDK?.on?.('play_again', () => {
-  resetAll();
-  draw();
-  requestAnimationFrame(tick);
-  document.body.classList.remove('no-cursor');
-});
-
-window.FarcadeSDK?.on?.('toggle_mute', (data) => {
-  if (audioContext) {
-    if (data.isMuted) audioContext.suspend();
-    else audioContext.resume();
-  }
-});
-
-</script>
   <meta charset="UTF-8">
   <title>BRICKS BREAKER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
