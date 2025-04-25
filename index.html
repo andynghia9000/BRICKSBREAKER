@@ -1,6 +1,4 @@
-<!DOCTYPE html>
 <html lang="en">
-
 
 <head>
   <meta charset="UTF-8">
@@ -664,9 +662,7 @@
             b.setAttribute('fill', brick.bonus ? brick.bonus.color : `url(#brick-grad-${brickColorId})`);
             b.setAttribute('stroke', brick.bonus ? 'var(--c64-white)' : 'var(--c64-brown)');
             b.setAttribute('stroke-width', brick.bonus ? 2.5 : 1.7);
-            if (b) {
-  svg.appendChild(b);
-}
+            svg.appendChild(b);
           }
     }
 
@@ -674,9 +670,7 @@
       let defs = svg.querySelector('defs');
       if (!defs) {
         defs = document.createElementNS(SVG_NS, 'defs');
-        if (defs) {
-  svg.appendChild(defs);
-}
+        svg.appendChild(defs);
       }
       for (let c of [...new Set(BRICK_COLORS)]) {
         const colorId = CSS.escape(c.replace(/[()#,]/g, '').replace(/var--/g, '').replace(/-/g, '_'));
@@ -768,18 +762,14 @@
       paddleRect.setAttribute('rx', 7);
       paddleRect.setAttribute('stroke', 'var(--c64-lightblue)');
       paddleRect.setAttribute('stroke-width', 2);
-      if (paddleRect) {
-  svg.appendChild(paddleRect);
-}
+      svg.appendChild(paddleRect);
     }
 
     function drawPaddleGradient() {
       let defs = svg.querySelector('defs');
       if (!defs) {
         defs = document.createElementNS(SVG_NS, 'defs');
-        if (defs) {
-  svg.appendChild(defs);
-}
+        svg.appendChild(defs);
       }
       if (!defs.querySelector('#paddle-grad')) {
         let grad = document.createElementNS(SVG_NS, 'linearGradient');
@@ -823,18 +813,14 @@
       ballCir.setAttribute('fill', 'url(#ball-grad)');
       ballCir.setAttribute('stroke', 'var(--c64-yellow)');
       ballCir.setAttribute('stroke-width', "2");
-      if (ballCir) {
-  svg.appendChild(ballCir);
-}
+      svg.appendChild(ballCir);
     }
 
     function drawBallGradient() {
       let defs = svg.querySelector('defs');
       if (!defs) {
         defs = document.createElementNS(SVG_NS, 'defs');
-        if (defs) {
-  svg.appendChild(defs);
-}
+        svg.appendChild(defs);
       }
       if (!defs.querySelector('#ball-grad')) {
         let grad = document.createElementNS(SVG_NS, 'radialGradient');
@@ -883,9 +869,7 @@
         animate.setAttribute('dur', '0.8s');
         animate.setAttribute('repeatCount', 'indefinite');
         bonusRect.appendChild(animate);
-        if (bonusRect) {
-  svg.appendChild(bonusRect);
-}
+        svg.appendChild(bonusRect);
       }
     }
 
@@ -897,9 +881,7 @@
         p.setAttribute('r', particle.size / 2);
         p.setAttribute('fill', particle.color);
         p.setAttribute('opacity', particle.life);
-        if (p) {
-  svg.appendChild(p);
-}
+        svg.appendChild(p);
       }
     }
 
@@ -1155,9 +1137,7 @@
         `Your score: ${score}`;
       g.appendChild(txt2);
       let defs = svg.querySelector('defs') || document.createElementNS(SVG_NS, 'defs');
-      if (defs) {
-  svg.appendChild(defs);
-}
+      svg.appendChild(defs);
       let shadowFilter = document.createElementNS(SVG_NS, 'filter');
       shadowFilter.id = 'shadow';
       shadowFilter.setAttribute('x', '-20%');
@@ -1199,9 +1179,7 @@
       patternRect.setAttribute('opacity', '0.1');
       pattern.appendChild(patternRect);
       defs.appendChild(pattern);
-      if (g) {
-  svg.appendChild(g);
-}
+      svg.appendChild(g);
       restartBtn.style.display = '';
       document.body.classList.remove('no-cursor');
     }
@@ -1254,9 +1232,7 @@
             bonusText.setAttribute('fill', 'var(--c64-lightblue)');
             break;
         }
-        if (bonusText) {
-  svg.appendChild(bonusText);
-}
+        svg.appendChild(bonusText);
       }
     }
 
