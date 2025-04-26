@@ -1136,8 +1136,11 @@
         `You destroyed all the bricks!` :
         `Your score: ${score}`;
       g.appendChild(txt2);
-      let defs = svg.querySelector('defs') || document.createElementNS(SVG_NS, 'defs');
+      let defs = svg.querySelector('defs');
+      if (!defs) {
+      defs = document.createElementNS(SVG_NS, 'defs');
       svg.appendChild(defs);
+      }
       let shadowFilter = document.createElementNS(SVG_NS, 'filter');
       shadowFilter.id = 'shadow';
       shadowFilter.setAttribute('x', '-20%');
