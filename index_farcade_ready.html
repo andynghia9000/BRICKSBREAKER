@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BRICKS BREAKER (Farcade Ready)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Thêm SDK Farcade -->
+  <script src="https://cdn.jsdelivr.net/npm/@farcade/game-sdk@latest/dist/index.min.js"></script>
+
+  <!-- Giữ nguyên phần CSS game -->
+</head>
+<body>
+  <!-- Giữ nguyên giao diện game -->
+
+  <script type="module">
+    let muted = false;
+
+    function setMuted(isMuted) {
+      muted = isMuted;
+    }
+
+    // Tích hợp sự kiện play_again
+    if (window.FarcadeSDK) {
+      window.FarcadeSDK.on('play_again', () => {
+        resetAll();
+        draw();
+        requestAnimationFrame(tick);
+      });
+    }
+
+    // Tích hợp sự kiện toggle_mute
+    if (window.FarcadeSDK) {
+      window.FarcadeSDK.on('toggle_mute', (data) => {
+        setMuted(data.isMuted);
+      });
+    }
+
+    function playSound(frequency, duration, type = 'square', delay = 0, volume = SOUND_VOLUME) {
+      if (muted) return; // Nếu muted thì không phát nhạc
+      // (Phần code playSound còn lại giữ nguyên)
+    }
+
+    function resetAll() {
+      // Reset game như cũ
+      // ...
+      if (window.FarcadeSDK) {
+        window.FarcadeSDK.singlePlayer.actions.ready();
+      }
+    }
+
+    function showGameOver(win) {
+      // Hiển thị màn hình Game Over như cũ
+      // ...
+      if (window.FarcadeSDK) {
+        window.FarcadeSDK.singlePlayer.actions.gameOver({ score: score });
+      }
+    }
+
+    function createParticleExplosion(brick) {
+      // Khi phá brick => haptic feedback
+      if (window.FarcadeSDK) {
+        window.FarcadeSDK.singlePlayer.actions.hapticFeedback();
+      }
+      // (Phần còn lại giữ nguyên)
+    }
+
+    function updateFallingBonuses() {
+      // Khi ăn bonus => haptic feedback
+      if (window.FarcadeSDK) {
+        window.FarcadeSDK.singlePlayer.actions.hapticFeedback();
+      }
+      // (Phần còn lại giữ nguyên)
+    }
+
+    // Các hàm game còn lại giữ nguyên
+  </script>
+</body>
+</html>
