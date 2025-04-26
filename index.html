@@ -1,79 +1,1291 @@
-<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>BRICKS BREAKER (Farcade Ready)</title>
+  <title>BRICKS BREAKER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
-  <!-- Thêm SDK Farcade -->
-  <script src="https://cdn.jsdelivr.net/npm/@farcade/game-sdk@latest/dist/index.min.js"></script>
+    :root {
+      --c64-bg: #6a5c9a;
+      --c64-darkblue: #352879;
+      --c64-lightblue: #7cb7ff;
+      --c64-yellow: #fff379;
+      --c64-orange: #ffb14e;
+      --c64-brick-red: #e7363e;
+      --c64-brick-orange: #E4863A;
+      --c64-brick-yellow: #f7e26b;
+      --c64-brick-cyan: #6ccff6;
+      --c64-brick-green: #57e227;
+      --c64-white: #ffffff;
+      --c64-grey: #b2b2b2;
+      --c64-brown: #8b5425;
+      --c64-bonus-purple: #a93de4;
+      --c64-bonus-gold: #ffd700;
+    }
 
-  <!-- Giữ nguyên phần CSS game -->
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body {
+      background: var(--c64-bg);
+      background-attachment: fixed;
+      background-size: unset;
+      animation: none;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      color: var(--c64-yellow);
+      min-height: 100vh;
+      font-family: 'VT323', monospace;
+      flex-direction: column;
+    }
+
+    h1 {
+      margin-top: 16px;
+      margin-bottom: 20px;
+      font-size: 3.5em;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: var(--c64-yellow);
+      text-shadow:
+        4px 4px 0 var(--c64-darkblue),
+        5px 5px 0 var(--c64-lightblue),
+        6px 6px 0 var(--c64-brick-red);
+      text-align: center;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: none;
+      animation: glitch-title 0.2s infinite alternate;
+      position: relative;
+      display: block;
+      width: 100%;
+      max-width: 420px;
+      box-sizing: border-box;
+    }
+
+    @keyframes glitch-title {
+      0% {
+        transform: skew(-1deg, 0);
+        text-shadow:
+          4px 4px 0 var(--c64-darkblue),
+          5px 5px 0 var(--c64-lightblue),
+          6px 6px 0 var(--c64-brick-red);
+      }
+
+      50% {
+        transform: skew(1deg, 0);
+        text-shadow:
+          3px 3px 0 var(--c64-darkblue),
+          4px 4px 0 var(--c64-lightblue),
+          5px 5px 0 var(--c64-brick-red);
+      }
+
+      100% {
+        transform: skew(-0.5deg, 0);
+        text-shadow:
+          5px 5px 0 var(--c64-darkblue),
+          6px 6px 0 var(--c64-lightblue),
+          7px 7px 0 var(--c64-brick-red);
+      }
+    }
+
+    #game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: none;
+      box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 10px var(--c64-darkblue),
+        0 0 0 10px var(--c64-bg),
+        0 0 0 14px var(--c64-lightblue),
+        8px 8px 25px rgba(0, 0, 0, 0.5);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      width: 420px;
+      height: 500px;
+      max-width: 96vw;
+      max-height: 90vh;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px,
+          transparent 1px),
+        linear-gradient(90deg,
+          rgba(255, 255, 255, 0.05) 1px,
+          transparent 1px);
+      background-size: 20px 20px;
+      touch-action: none;
+    }
+
+    #game-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(to bottom,
+          transparent 0px,
+          rgba(0, 0, 0, 0.8) 1px,
+          transparent 3px);
+      background-size: 100% 4px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    #scoreboard {
+      width: 100%;
+      background: linear-gradient(90deg,
+          var(--c64-darkblue),
+          var(--c64-bg));
+      padding: 8px 16px;
+      font-size: 1.8em;
+      border-bottom: 4px solid var(--c64-lightblue);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-shadow: 1px 1px 2px var(--c64-darkblue);
+      position: relative;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+
+    #score,
+    #lives,
+    #level-display {
+      font-family: inherit;
+      padding: 2px 6px;
+      background-color: var(--c64-darkblue);
+      border-radius: 3px;
+      position: relative;
+      z-index: 2;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      min-width: 60px;
+      text-align: center;
+      box-sizing: border-box;
+      box-shadow:
+        inset 1px 1px 3px rgba(0, 0, 0, 0.5),
+        inset -1px -1px 3px rgba(255, 255, 255, 0.2);
+    }
+
+    #score {
+      color: var(--c64-yellow);
+      border: 2px solid var(--c64-orange);
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    #lives {
+      color: var(--c64-brick-red);
+      border: 2px solid var(--c64-yellow);
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    #level-display {
+      color: var(--c64-brick-cyan);
+      border: 2px solid var(--c64-white);
+      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    @keyframes life-pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .life-change {
+      animation: life-pulse 0.3s ease-in-out;
+    }
+
+    @keyframes level-grow {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .level-change {
+      animation: level-grow 0.4s ease-in-out;
+    }
+
+    #game {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: var(--c64-bg);
+    }
+
+    .c64-btn {
+      font-family: 'VT323', monospace;
+      font-size: 1.3em;
+      background: var(--c64-brick-yellow);
+      color: var(--c64-darkblue);
+      border: 3px solid var(--c64-yellow);
+      box-shadow: 2px 2px 0 var(--c64-darkblue);
+      border-radius: 4px;
+      padding: 3px 12px;
+      margin: 0 6px;
+      cursor: pointer;
+      margin-top: -40px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .c64-btn:active {
+      box-shadow: none;
+      transform: translate(2px, 2px);
+      background: var(--c64-orange);
+    }
+
+    #restart-btn {
+      font-size: 1.8em;
+      padding: 8px 24px;
+      margin-top: -60px;
+      background: var(--c64-brick-red);
+      color: var(--c64-yellow);
+      border-color: var(--c64-orange);
+      box-shadow: 3px 3px 0 var(--c64-darkblue);
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    #restart-btn:active {
+      box-shadow: none;
+      transform: translate(3px, 3px);
+      background: var(--c64-orange);
+      color: var(--c64-darkblue);
+    }
+
+    .instructions-block {
+      margin-top: 1.8em;
+      text-align: center;
+      width: 100%;
+      max-width: 420px;
+      box-sizing: border-box;
+      color: var(--c64-white);
+      font-size: 1.15em;
+      text-shadow: 1px 1px 0 var(--c64-darkblue);
+      background: var(--c64-darkblue);
+      border: 3px solid var(--c64-yellow);
+      box-shadow: 2px 2px 0 var(--c64-orange);
+      border-radius: 8px;
+      padding: 12px 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .instructions-block b {
+      color: var(--c64-yellow);
+      text-shadow: 1px 1px 0 var(--c64-brick-red);
+    }
+
+    @media (max-width: 530px) {
+      #game-container {
+        width: 100vw;
+        height: 80vw;
+        min-height: 360px;
+        min-width: 240px;
+        background-size: 100% 4px;
+      }
+
+      #scoreboard {
+        font-size: 1.5em;
+        padding: 6px 10px;
+      }
+
+      #score,
+      #lives,
+      #level-display {
+        padding: 1px 4px;
+      }
+
+      h1 {
+        font-size: 3em;
+        width: 100vw;
+        max-width: none;
+        margin-bottom: 10px;
+      }
+
+      .instructions-block {
+        width: 100vw;
+        max-width: none;
+        padding: 12px 10px;
+        margin-top: 1em;
+      }
+
+      #restart-btn {
+        margin-top: -50px;
+      }
+    }
+
+    body.no-cursor {
+      cursor: none;
+    }
+  </style>
 </head>
+
 <body>
-  <!-- Giữ nguyên giao diện game -->
+  <h1>BRICKS BREAKER</h1>
+  <div id="game-container">
+    <div id="scoreboard">
+      <span id="score">SCORE: 00000</span>
+      <span id="lives">LIVES: 3</span>
+      <span id="level-display">LEVEL: 1</span>
+    </div>
+    <svg id="game" viewBox="0 0 408 480"></svg>
+    <button id="restart-btn" class="c64-btn" style="display:none;">REPLAY</button>
+  </div>
+  <div class="instructions-block">
+    &nbsp;<b>SPACE</b> to launch the ball.<br>
+    <b>LEFT</b>/<b>RIGHT</b> to move the paddle.<br>
+    <b>Destroy all bricks!</b>
+    <p style="margin-top: 12px; margin-bottom: 0; font-size: 0.8em; text-align: center; color: var(--c64-grey);">
+      <a href="https://codepen.io/H-L-the-lessful" target="_blank" style="color: inherit; text-decoration: none;">
+        CODE by HL
+      </a>
+    </p>
+  </div>
 
   <script type="module">
-    let muted = false;
+    const SVG_NS = "http://www.w3.org/2000/svg";
+    const GAME_W = 408,
+      GAME_H = 480;
+    let PADDLE_W = 64,
+      PADDLE_H = 12,
+      PADDLE_Y = GAME_H - 36;
+    const BALL_SIZE = 10;
+    const BRICK_W = 30,
+      BRICK_H = 18,
+      BRICK_PAD_X = 4,
+      BRICK_PAD_Y = 3;
+    const BRICK_OFFSET_Y = 40;
+    const START_LIVES = 3;
+    let originalPaddleWidth = 64;
+    const BONUS_TEXT_DURATION = 1000;
+    const SOUND_VOLUME = 0.3;
+    const BOUNDS_X_MIN = -20;
+    const BOUNDS_X_MAX = GAME_W + 20;
+    const BRICK_COLORS = [
+      'var(--c64-brick-red)',
+      'var(--c64-brick-orange)',
+      'var(--c64-brick-yellow)',
+      'var(--c64-brick-cyan)',
+      'var(--c64-brick-green)'
+    ];
+    const LEVELS = [{
+        rows: 7,
+        cols: 12,
+        difficulty: 1,
+        layout: [
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ]
+      },
+      {
+        rows: 8,
+        cols: 13,
+        difficulty: 1.2,
+        layout: [
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+          [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
+          [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ]
+      },
+      {
+        rows: 9,
+        cols: 14,
+        difficulty: 1.4,
+        layout: [
+          [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+          [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+          [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+          [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        ]
+      }
+    ];
+    let currentLevel = 0;
+    const BONUS_TYPES = [{
+        color: 'var(--c64-bonus-purple)',
+        effect: (gameState) => {
+          gameState.lives++;
+          activeBonusTexts.push({
+            type: 'life',
+            x: gameState.paddleX + gameState.paddleW / 2,
+            y: PADDLE_Y - 20,
+            startTime: Date.now()
+          });
+          playSound(600, 0.2, 'square');
+          playSound(800, 0.2, 'square', 0.1);
+        },
+        description: 'Life Bonus'
+      },
+      {
+        color: 'var(--c64-bonus-gold)',
+        effect: (gameState) => {
+          gameState.score += 2000;
+          activeBonusTexts.push({
+            type: 'score',
+            x: gameState.paddleX + gameState.paddleW / 2,
+            y: PADDLE_Y - 20,
+            startTime: Date.now()
+          });
+          playSound(1000, 0.15, 'sine');
+          playSound(1200, 0.15, 'sine', 0.05);
+        },
+        description: 'Points Bonus'
+      },
+      {
+        color: 'var(--c64-lightblue)',
+        effect: (gameState) => {
+          PADDLE_W = originalPaddleWidth * 1.5;
+          paddle.w = PADDLE_W;
+          activeBonusTexts.push({
+            type: 'paddle',
+            x: gameState.paddleX + gameState.paddleW / 2,
+            y: PADDLE_Y - 20,
+            startTime: Date.now()
+          });
+          clearTimeout(window.paddleTimeoutId);
+          window.paddleTimeoutId = setTimeout(() => {
+            PADDLE_W = originalPaddleWidth;
+            paddle.w = PADDLE_W;
+            window.paddleTimeoutId = null;
+          }, 5000);
+          playSound(440, 0.1, 'sawtooth');
+          playSound(550, 0.1, 'sawtooth', 0.05);
+          playSound(660, 0.1, 'sawtooth', 0.1);
+        },
+        description: 'Paddle Bonus'
+      }
+    ];
+    let paddle = {
+      x: (GAME_W - PADDLE_W) / 2,
+      w: PADDLE_W
+    };
+    let ball = {
+      x: 0,
+      y: 0,
+      dx: 0,
+      dy: 0,
+      moving: false
+    };
+    let bricks = [];
+    let score = 0,
+      lives = START_LIVES;
+    let rightPressed = false,
+      leftPressed = false;
+    let gameOver = false;
+    const fallingBonuses = [];
+    let activeBonusTexts = [];
+    let particles = [];
+    let lastLives = START_LIVES;
+    let lastLevel = 0;
+    let audioContext;
 
-    function setMuted(isMuted) {
-      muted = isMuted;
-    }
-
-    // Tích hợp sự kiện play_again
-    if (window.FarcadeSDK) {
-      window.FarcadeSDK.on('play_again', () => {
-        resetAll();
-        draw();
-        requestAnimationFrame(tick);
-      });
-    }
-
-    // Tích hợp sự kiện toggle_mute
-    if (window.FarcadeSDK) {
-      window.FarcadeSDK.on('toggle_mute', (data) => {
-        setMuted(data.isMuted);
-      });
+    function initAudio() {
+      if (!audioContext) {
+        audioContext = new(window.AudioContext || window.webkitAudioContext)();
+      }
     }
 
     function playSound(frequency, duration, type = 'square', delay = 0, volume = SOUND_VOLUME) {
-      if (muted) return; // Nếu muted thì không phát nhạc
-      // (Phần code playSound còn lại giữ nguyên)
+      initAudio();
+      if (!audioContext) return;
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime + delay);
+      gainNode.gain.setValueAtTime(volume, audioContext.currentTime + delay);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + delay + duration);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.start(audioContext.currentTime + delay);
+      oscillator.stop(audioContext.currentTime + delay + duration);
+    }
+    const svg = document.getElementById('game');
+    const scoreEl = document.getElementById('score');
+    const livesEl = document.getElementById('lives');
+    const restartBtn = document.getElementById('restart-btn');
+    let levelEl = document.getElementById('level-display');
+    if (!levelEl) {
+      levelEl = document.createElement('span');
+      levelEl.id = 'level-display';
+      document.getElementById('scoreboard').appendChild(levelEl);
+    }
+
+    function resetBricks() {
+      const level = LEVELS[currentLevel];
+      bricks = [];
+      const totalBrickWallWidth = level.cols * (BRICK_W + BRICK_PAD_X) - BRICK_PAD_X;
+      const totalBrickWallHeight = level.rows * (BRICK_H + BRICK_PAD_Y) - BRICK_PAD_Y;
+      const startX = (GAME_W - totalBrickWallWidth) / 2;
+      const startY = BRICK_OFFSET_Y;
+      for (let r = 0; r < level.rows; r++) {
+        let row = [];
+        for (let c = 0; c < level.cols; c++) {
+          if (level.layout[r] && level.layout[r][c] === 1) {
+            const bonusProbability = 0.05 + (currentLevel * 0.02);
+            const isBonusBrick = Math.random() < bonusProbability;
+            const bonusType = isBonusBrick ?
+              BONUS_TYPES[Math.floor(Math.random() * BONUS_TYPES.length)] :
+              null;
+            row.push({
+              x: startX + c * (BRICK_W + BRICK_PAD_X),
+              y: startY + r * (BRICK_H + BRICK_PAD_Y),
+              hit: false,
+              color: BRICK_COLORS[r % BRICK_COLORS.length],
+              bonus: bonusType
+            });
+          } else {
+            row.push(null);
+          }
+        }
+        bricks.push(row);
+      }
+      bricks.all = bricks.flat().filter(b => b !== null);
+    }
+
+    function resetPaddleBall() {
+      PADDLE_W = originalPaddleWidth;
+      paddle.w = PADDLE_W;
+      paddle.x = (GAME_W - paddle.w) / 2;
+      ball.x = paddle.x + paddle.w / 2 - BALL_SIZE / 2;
+      ball.y = PADDLE_Y - BALL_SIZE;
+      ball.dx = 3 * (Math.random() < 0.5 ? 1 : -1) * LEVELS[currentLevel].difficulty;
+      ball.dy = -4 * LEVELS[currentLevel].difficulty;
+      ball.moving = false;
+      clearTimeout(window.paddleTimeoutId);
+      window.paddleTimeoutId = null;
     }
 
     function resetAll() {
-      // Reset game như cũ
-      // ...
-      if (window.FarcadeSDK) {
-        window.FarcadeSDK.singlePlayer.actions.ready();
+      score = 0;
+      lives = START_LIVES;
+      gameOver = false;
+      currentLevel = 0;
+      resetBricks();
+      resetPaddleBall();
+      fallingBonuses.length = 0;
+      activeBonusTexts.length = 0;
+      particles.length = 0;
+      lastLives = lives;
+      lastLevel = currentLevel;
+      updateScoreboard();
+      restartBtn.style.display = "none";
+      if (audioContext) {
+        try {
+          if (audioContext.state !== 'closed') {
+            audioContext.close().then(() => {
+              console.log("AudioContext closed.");
+              audioContext = null;
+            }).catch(e => {
+              console.error("Error closing audio context:", e);
+            });
+          } else {
+            audioContext = null;
+          }
+        } catch (e) {
+          console.error("Error trying to close audio context:", e);
+          audioContext = null;
+        }
       }
     }
 
-    function showGameOver(win) {
-      // Hiển thị màn hình Game Over như cũ
-      // ...
-      if (window.FarcadeSDK) {
-        window.FarcadeSDK.singlePlayer.actions.gameOver({ score: score });
+    function clearSVG() {
+      const defsElement = svg.querySelector('defs');
+      const childrenToRemove = Array.from(svg.children).filter(child => child !== defsElement);
+      for (const child of childrenToRemove) {
+        svg.removeChild(child);
       }
+      drawBrickGradients();
+      drawPaddleGradient();
+      drawBallGradient();
+    }
+
+    function drawBricks() {
+      for (let row of bricks)
+        for (let brick of row)
+          if (brick && !brick.hit) {
+            let b = document.createElementNS(SVG_NS, 'rect');
+            b.setAttribute('x', brick.x);
+            b.setAttribute('y', brick.y);
+            b.setAttribute('width', BRICK_W);
+            b.setAttribute('height', BRICK_H);
+            b.setAttribute('rx', 3);
+            const brickColorId = CSS.escape(brick.color.replace(/[()#,]/g, '').replace(/var--/g, '').replace(/-/g, '_'));
+            b.setAttribute('fill', brick.bonus ? brick.bonus.color : `url(#brick-grad-${brickColorId})`);
+            b.setAttribute('stroke', brick.bonus ? 'var(--c64-white)' : 'var(--c64-brown)');
+            b.setAttribute('stroke-width', brick.bonus ? 2.5 : 1.7);
+            svg.appendChild(b);
+          }
+    }
+
+    function drawBrickGradients() {
+      let defs = svg.querySelector('defs');
+      if (!defs) {
+        defs = document.createElementNS(SVG_NS, 'defs');
+        svg.appendChild(defs);
+      }
+      for (let c of [...new Set(BRICK_COLORS)]) {
+        const colorId = CSS.escape(c.replace(/[()#,]/g, '').replace(/var--/g, '').replace(/-/g, '_'));
+        if (!defs.querySelector(`#brick-grad-${colorId}`)) {
+          let grad = document.createElementNS(SVG_NS, 'linearGradient');
+          grad.id = "brick-grad-" + colorId;
+          grad.setAttribute("x1", "0%");
+          grad.setAttribute("x2", "100%");
+          grad.setAttribute("y1", "0%");
+          grad.setAttribute("y2", "100%");
+          let stops = [{
+              o: "0%",
+              color: shade(c, 1.12)
+            },
+            {
+              o: "18%",
+              color: shade(c, 1.0)
+            },
+            {
+              o: "68%",
+              color: shade(c, 0.94)
+            },
+            {
+              o: "100%",
+              color: shade(c, 0.82)
+            }
+          ];
+          for (let s of stops) {
+            let stop = document.createElementNS(SVG_NS, 'stop');
+            stop.setAttribute("offset", s.o);
+            stop.setAttribute("stop-color", s.color);
+            grad.appendChild(stop);
+          }
+          defs.appendChild(grad);
+        }
+      }
+      for (let bonusType of BONUS_TYPES) {
+        const colorId = CSS.escape(bonusType.color.replace(/[()#,]/g, '').replace(/var--/g, '').replace(/-/g, '_'));
+        if (!defs.querySelector(`#bonus-grad-${colorId}`)) {
+          let grad = document.createElementNS(SVG_NS, 'linearGradient');
+          grad.id = "bonus-grad-" + colorId;
+          grad.setAttribute("x1", "0%");
+          grad.setAttribute("x2", "100%");
+          grad.setAttribute("y1", "0%");
+          grad.setAttribute("y2", "100%");
+          let stops = [{
+              o: "0%",
+              color: shade(bonusType.color, 1.1)
+            },
+            {
+              o: "50%",
+              color: bonusType.color
+            },
+            {
+              o: "100%",
+              color: shade(bonusType.color, 0.9)
+            }
+          ];
+          for (let s of stops) {
+            let stop = document.createElementNS(SVG_NS, 'stop');
+            stop.setAttribute("offset", s.o);
+            stop.setAttribute("stop-color", s.color);
+            grad.appendChild(stop);
+          }
+          defs.appendChild(grad);
+        }
+      }
+    }
+
+    function shade(raw, f) {
+      const styleEl = document.createElement("div");
+      styleEl.style.color = raw;
+      document.body.appendChild(styleEl);
+      const computedColor = getComputedStyle(styleEl).color;
+      document.body.removeChild(styleEl);
+      const rgbMatch = computedColor.match(/\d+/g);
+      if (!rgbMatch) return raw;
+      let rgb = rgbMatch.map(Number);
+      return `rgb(${rgb.map(x=>Math.min(255, Math.max(0, Math.round(x * f)))).join(',')})`;
+    }
+
+    function drawPaddle() {
+      let paddleRect = document.createElementNS(SVG_NS, 'rect');
+      paddleRect.setAttribute('x', paddle.x);
+      paddleRect.setAttribute('y', PADDLE_Y);
+      paddleRect.setAttribute('width', paddle.w);
+      paddleRect.setAttribute('height', PADDLE_H);
+      paddleRect.setAttribute('fill', 'url(#paddle-grad)');
+      paddleRect.setAttribute('rx', 7);
+      paddleRect.setAttribute('stroke', 'var(--c64-lightblue)');
+      paddleRect.setAttribute('stroke-width', 2);
+      svg.appendChild(paddleRect);
+    }
+
+    function drawPaddleGradient() {
+      let defs = svg.querySelector('defs');
+      if (!defs) {
+        defs = document.createElementNS(SVG_NS, 'defs');
+        svg.appendChild(defs);
+      }
+      if (!defs.querySelector('#paddle-grad')) {
+        let grad = document.createElementNS(SVG_NS, 'linearGradient');
+        grad.id = "paddle-grad";
+        grad.setAttribute("x1", "0%");
+        grad.setAttribute("x2", "100%");
+        grad.setAttribute("y1", "15%");
+        grad.setAttribute("y2", "100%");
+        let stops = [{
+            o: "0%",
+            color: "var(--c64-lightblue)"
+          },
+          {
+            o: "39%",
+            color: "var(--c64-grey)"
+          },
+          {
+            o: "77%",
+            color: "var(--c64-bg)"
+          },
+          {
+            o: "100%",
+            color: "var(--c64-darkblue)"
+          }
+        ];
+        for (let s of stops) {
+          let stop = document.createElementNS(SVG_NS, 'stop');
+          stop.setAttribute("offset", s.o);
+          stop.setAttribute("stop-color", s.color);
+          grad.appendChild(stop);
+        }
+        defs.appendChild(grad);
+      }
+    }
+
+    function drawBall() {
+      let ballCir = document.createElementNS(SVG_NS, 'circle');
+      ballCir.setAttribute('cx', ball.x + BALL_SIZE / 2);
+      ballCir.setAttribute('cy', ball.y + BALL_SIZE / 2);
+      ballCir.setAttribute('r', BALL_SIZE / 2);
+      ballCir.setAttribute('fill', 'url(#ball-grad)');
+      ballCir.setAttribute('stroke', 'var(--c64-yellow)');
+      ballCir.setAttribute('stroke-width', "2");
+      svg.appendChild(ballCir);
+    }
+
+    function drawBallGradient() {
+      let defs = svg.querySelector('defs');
+      if (!defs) {
+        defs = document.createElementNS(SVG_NS, 'defs');
+        svg.appendChild(defs);
+      }
+      if (!defs.querySelector('#ball-grad')) {
+        let grad = document.createElementNS(SVG_NS, 'radialGradient');
+        grad.id = "ball-grad";
+        grad.setAttribute("cx", "31%");
+        grad.setAttribute("cy", "35%");
+        grad.setAttribute("r", "65%");
+        let stops = [{
+            o: "0%",
+            color: "var(--c64-white)"
+          },
+          {
+            o: "50%",
+            color: "var(--c64-yellow)"
+          },
+          {
+            o: "100%",
+            color: "var(--c64-orange)"
+          }
+        ];
+        for (let s of stops) {
+          let st = document.createElementNS(SVG_NS, 'stop');
+          st.setAttribute("offset", s.o);
+          st.setAttribute("stop-color", s.color);
+          grad.appendChild(st);
+        }
+        defs.appendChild(grad);
+      }
+    }
+
+    function drawFallingBonuses() {
+      for (const bonus of fallingBonuses) {
+        let bonusRect = document.createElementNS(SVG_NS, 'rect');
+        bonusRect.setAttribute('x', bonus.x);
+        bonusRect.setAttribute('y', bonus.y);
+        bonusRect.setAttribute('width', BRICK_W);
+        bonusRect.setAttribute('height', BRICK_H);
+        bonusRect.setAttribute('rx', 4);
+        bonusRect.setAttribute('fill', bonus.color);
+        bonusRect.setAttribute('stroke', 'var(--c64-white)');
+        bonusRect.setAttribute('stroke-width', 2);
+        bonusRect.setAttribute('opacity', 0.9);
+        let animate = document.createElementNS(SVG_NS, 'animate');
+        animate.setAttribute('attributeName', 'opacity');
+        animate.setAttribute('values', '0.9;0.5;0.9');
+        animate.setAttribute('dur', '0.8s');
+        animate.setAttribute('repeatCount', 'indefinite');
+        bonusRect.appendChild(animate);
+        svg.appendChild(bonusRect);
+      }
+    }
+
+    function drawParticles() {
+      for (const particle of particles) {
+        let p = document.createElementNS(SVG_NS, 'circle');
+        p.setAttribute('cx', particle.x);
+        p.setAttribute('cy', particle.y);
+        p.setAttribute('r', particle.size / 2);
+        p.setAttribute('fill', particle.color);
+        p.setAttribute('opacity', particle.life);
+        svg.appendChild(p);
+      }
+    }
+
+    function tick() {
+      if (gameOver) return;
+      updateBonusTexts();
+      updateFallingBonuses();
+      updateParticles();
+      if (rightPressed) paddle.x = Math.min(BOUNDS_X_MAX - paddle.w, paddle.x + 6);
+      if (leftPressed) paddle.x = Math.max(BOUNDS_X_MIN, paddle.x - 6);
+      if (ball.moving) {
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+        if (ball.x <= BOUNDS_X_MIN) {
+          ball.x = BOUNDS_X_MIN;
+          ball.dx *= -1;
+          playSound(400, 0.05);
+        }
+        if (ball.x + BALL_SIZE >= BOUNDS_X_MAX) {
+          ball.x = BOUNDS_X_MAX - BALL_SIZE;
+          ball.dx *= -1;
+          playSound(400, 0.05);
+        }
+        if (ball.y <= 0) {
+          ball.y = 0;
+          ball.dy *= -1;
+          playSound(400, 0.05);
+        }
+        if (
+          ball.y + BALL_SIZE >= PADDLE_Y &&
+          ball.y + BALL_SIZE <= PADDLE_Y + PADDLE_H + 4 &&
+          ball.x + BALL_SIZE / 2 >= paddle.x &&
+          ball.x + BALL_SIZE / 2 <= paddle.x + paddle.w
+        ) {
+          ball.dy = -Math.abs(ball.dy);
+          const hitPos = (ball.x + BALL_SIZE / 2) - paddle.x;
+          const normalizedHitPos = hitPos / paddle.w;
+          ball.dx = (normalizedHitPos - 0.5) * 2 * 5 * LEVELS[currentLevel].difficulty;
+          ball.y = PADDLE_Y - BALL_SIZE - 1;
+          playSound(300, 0.08);
+        }
+        let brickHit = null;
+        outer:
+          for (let r = 0; r < bricks.length; r++)
+            for (let c = 0; c < bricks[r].length; c++) {
+              let brick = bricks[r][c];
+              if (!brick || brick.hit) continue;
+              let bx = brick.x,
+                by = brick.y;
+              if (
+                ball.x + BALL_SIZE > bx && ball.x < bx + BRICK_W &&
+                ball.y + BALL_SIZE > by && ball.y < by + BRICK_H
+              ) {
+                brick.hit = true;
+                brickHit = {
+                  r,
+                  c,
+                  brick
+                };
+                let levelMultiplier = LEVELS[currentLevel].difficulty;
+                score += Math.round(50 * levelMultiplier * (bricks.length - r));
+                createParticleExplosion(brick);
+                playSound(150, 0.1, 'sawtooth');
+                if (brick.bonus) {
+                  fallingBonuses.push({
+                    x: brick.x,
+                    y: brick.y,
+                    color: brick.bonus.color,
+                    effect: brick.bonus.effect
+                  });
+                }
+                if (ball.x + BALL_SIZE - ball.dx <= bx && ball.x + BALL_SIZE > bx) {
+                  ball.dx *= -1;
+                  ball.x = bx - BALL_SIZE - 0.1;
+                } else if (ball.x - ball.dx >= bx + BRICK_W && ball.x < bx + BRICK_W) {
+                  ball.dx *= -1;
+                  ball.x = bx + BRICK_W + 0.1;
+                } else if (ball.y + BALL_SIZE - ball.dy <= by && ball.y + BALL_SIZE > by) {
+                  ball.dy *= -1;
+                  ball.y = by - BALL_SIZE - 0.1;
+                } else if (ball.y - ball.dy >= by + BRICK_H && ball.y < by + BRICK_H) {
+                  ball.dy *= -1;
+                  ball.y = by + BRICK_H + 0.1;
+                } else {
+                  ball.dy *= -1;
+                }
+                playSound(500, 0.05);
+                if (bricks.flat().filter(b => b !== null).every(b => b.hit)) {
+                  gameOver = true;
+                  setTimeout(() => showGameOver(true), 300);
+                  return;
+                }
+                updateScoreboard();
+                break outer;
+              }
+            }
+        if (ball.y > GAME_H) {
+          playSound(100, 0.4, 'triangle', 0, 0.5);
+          playSound(80, 0.5, 'square', 0.1, 0.6);
+          lives -= 1;
+          updateScoreboard();
+          if (lives <= 0) {
+            gameOver = true;
+            setTimeout(() => showGameOver(false), 300);
+          } else {
+            resetPaddleBall();
+          }
+        }
+      } else {
+        ball.x = paddle.x + paddle.w / 2 - BALL_SIZE / 2;
+      }
+      draw();
+      requestAnimationFrame(tick);
     }
 
     function createParticleExplosion(brick) {
-      // Khi phá brick => haptic feedback
-      if (window.FarcadeSDK) {
-        window.FarcadeSDK.singlePlayer.actions.hapticFeedback();
+      const particleCount = 15;
+      const brickCenterX = brick.x + BRICK_W / 2;
+      const brickCenterY = brick.y + BRICK_H / 2;
+      const baseColor = brick.color;
+      for (let i = 0; i < particleCount; i++) {
+        const angle = Math.random() * Math.PI;
+        const speed = Math.random() * 4 + 1;
+        const dx = Math.cos(angle) * speed * (Math.random() < 0.5 ? 1 : -1) * 0.8;
+        const dy = Math.sin(angle) * speed * 1.2;
+        particles.push({
+          x: brickCenterX,
+          y: brickCenterY,
+          dx: dx,
+          dy: dy,
+          color: shade(baseColor, 1 + Math.random() * 0.3),
+          size: Math.random() * 3 + 1,
+          life: 1
+        });
       }
-      // (Phần còn lại giữ nguyên)
+    }
+    const gravity = 0.1;
+    const friction = 0.99;
+    const lifeDecay = 0.03;
+
+    function updateParticles() {
+      for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
+        p.dy += gravity;
+        p.dx *= friction;
+        p.dy *= friction;
+        p.x += p.dx;
+        p.y += p.dy;
+        p.life -= lifeDecay;
+        p.size -= lifeDecay * 2;
+        if (p.life <= 0 || p.size <= 0 || p.y > GAME_H + p.size) {
+          particles.splice(i, 1);
+        }
+      }
+    }
+    document.addEventListener("keydown", function(e) {
+      if (e.key == "ArrowRight") rightPressed = true;
+      else if (e.key == "ArrowLeft") leftPressed = true;
+      else if ((e.key == " " || e.key == "Spacebar") && !ball.moving && !gameOver) {
+        ball.moving = true;
+        initAudio();
+        document.body.classList.add('no-cursor');
+      }
+    });
+    document.addEventListener("keyup", function(e) {
+      if (e.key == "ArrowRight") rightPressed = false;
+      else if (e.key == "ArrowLeft") leftPressed = false;
+    });
+    svg.addEventListener("pointermove", e => {
+      let rect = svg.getBoundingClientRect();
+      let px = ((e.clientX - rect.left) / rect.width) * GAME_W;
+      let mappedPx = px;
+      let paddleCenter = mappedPx;
+      let newPaddleX = paddleCenter - paddle.w / 2;
+      paddle.x = Math.max(BOUNDS_X_MIN, Math.min(BOUNDS_X_MAX - paddle.w, newPaddleX));
+      if (!ball.moving) {
+        ball.x = paddle.x + paddle.w / 2 - BALL_SIZE / 2;
+      }
+    });
+    svg.addEventListener("pointerdown", e => {
+      initAudio();
+      if (!ball.moving && !gameOver) {
+        ball.moving = true;
+        document.body.classList.add('no-cursor');
+      }
+    });
+
+    function showGameOver(win) {
+      if (win && currentLevel < LEVELS.length - 1) {
+        currentLevel++;
+        document.getElementById('game').classList.add('level-transition');
+        setTimeout(() => {
+          document.getElementById('game').classList.remove('level-transition');
+        }, 500);
+        resetBricks();
+        resetPaddleBall();
+        fallingBonuses.length = 0;
+        activeBonusTexts.length = 0;
+        particles.length = 0;
+        gameOver = false;
+        ball.moving = false;
+        lastLevel = currentLevel;
+        updateScoreboard();
+        draw();
+        requestAnimationFrame(tick);
+        document.body.classList.remove('no-cursor');
+        return;
+      }
+      let g = document.createElementNS(SVG_NS, 'g');
+      g.setAttribute('data-game-over', 'true');
+      let bg = document.createElementNS(SVG_NS, 'rect');
+      bg.setAttribute('x', 40);
+      bg.setAttribute('y', 140);
+      bg.setAttribute('width', GAME_W - 80);
+      bg.setAttribute('height', 200);
+      bg.setAttribute('fill', 'var(--c64-darkblue)');
+      bg.setAttribute('stroke', 'var(--c64-yellow)');
+      bg.setAttribute('stroke-width', 4);
+      bg.setAttribute('rx', 15);
+      bg.setAttribute('filter', 'url(#shadow)');
+      g.appendChild(bg);
+      let scanlines = document.createElementNS(SVG_NS, 'rect');
+      scanlines.setAttribute('x', 40);
+      scanlines.setAttribute('y', 140);
+      scanlines.setAttribute('width', GAME_W - 80);
+      scanlines.setAttribute('height', 200);
+      scanlines.setAttribute('fill', 'url(#scanline-pattern)');
+      scanlines.setAttribute('opacity', '0.2');
+      scanlines.setAttribute('pointer-events', 'none');
+      g.appendChild(scanlines);
+      let txt1 = document.createElementNS(SVG_NS, 'text');
+      txt1.setAttribute('x', GAME_W / 2);
+      txt1.setAttribute('y', 220);
+      txt1.setAttribute('text-anchor', 'middle');
+      txt1.setAttribute('font-size', "3em");
+      txt1.setAttribute('font-family', 'VT323, monospace');
+      txt1.setAttribute('fill', win ? 'var(--c64-brick-green)' : 'var(--c64-brick-red)');
+      txt1.setAttribute('stroke', 'var(--c64-yellow)');
+      txt1.setAttribute('stroke-width', 1);
+      txt1.setAttribute('text-rendering', 'optimizeLegibility');
+      txt1.setAttribute('filter', 'url(#glitch-filter)');
+      txt1.textContent = win ? 'VICTORY!' : 'GAME OVER';
+      g.appendChild(txt1);
+      let txt2 = document.createElementNS(SVG_NS, 'text');
+      txt2.setAttribute('x', GAME_W / 2);
+      txt2.setAttribute('y', 270);
+      txt2.setAttribute('text-anchor', 'middle');
+      txt2.setAttribute('font-size', "1.5em");
+      txt2.setAttribute('font-family', 'VT323, monospace');
+      txt2.setAttribute('fill', 'var(--c64-yellow)');
+      txt2.textContent = win ?
+        `You destroyed all the bricks!` :
+        `Your score: ${score}`;
+      g.appendChild(txt2);
+      let defs = svg.querySelector('defs') || document.createElementNS(SVG_NS, 'defs');
+      svg.appendChild(defs);
+      let shadowFilter = document.createElementNS(SVG_NS, 'filter');
+      shadowFilter.id = 'shadow';
+      shadowFilter.setAttribute('x', '-20%');
+      shadowFilter.setAttribute('y', '-20%');
+      shadowFilter.setAttribute('width', '140%');
+      shadowFilter.setAttribute('height', '140%');
+      let feDropShadow = document.createElementNS(SVG_NS, 'feDropShadow');
+      feDropShadow.setAttribute('dx', '4');
+      feDropShadow.setAttribute('dy', '4');
+      feDropShadow.setAttribute('stdDeviation', '5');
+      feDropShadow.setAttribute('flood-color', 'rgba(0,0,0,0.5)');
+      shadowFilter.appendChild(feDropShadow);
+      defs.appendChild(shadowFilter);
+      let glitchFilter = document.createElementNS(SVG_NS, 'filter');
+      glitchFilter.id = 'glitch-filter';
+      let feTurbulence = document.createElementNS(SVG_NS, 'feTurbulence');
+      feTurbulence.setAttribute('type', 'fractalNoise');
+      feTurbulence.setAttribute('baseFrequency', '0.05');
+      feTurbulence.setAttribute('numOctaves', '3');
+      feTurbulence.setAttribute('result', 'turbulence');
+      glitchFilter.appendChild(feTurbulence);
+      let feDisplacementMap = document.createElementNS(SVG_NS, 'feDisplacementMap');
+      feDisplacementMap.setAttribute('in', 'SourceGraphic');
+      feDisplacementMap.setAttribute('in2', 'turbulence');
+      feDisplacementMap.setAttribute('scale', '3');
+      feDisplacementMap.setAttribute('xChannelSelector', 'R');
+      feDisplacementMap.setAttribute('yChannelSelector', 'G');
+      glitchFilter.appendChild(feDisplacementMap);
+      defs.appendChild(glitchFilter);
+      let pattern = document.createElementNS(SVG_NS, 'pattern');
+      pattern.id = 'scanline-pattern';
+      pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+      pattern.setAttribute('width', '4');
+      pattern.setAttribute('height', '4');
+      let patternRect = document.createElementNS(SVG_NS, 'rect');
+      patternRect.setAttribute('width', '4');
+      patternRect.setAttribute('height', '1');
+      patternRect.setAttribute('fill', 'var(--c64-white)');
+      patternRect.setAttribute('opacity', '0.1');
+      pattern.appendChild(patternRect);
+      defs.appendChild(pattern);
+      svg.appendChild(g);
+      restartBtn.style.display = '';
+      document.body.classList.remove('no-cursor');
     }
 
     function updateFallingBonuses() {
-      // Khi ăn bonus => haptic feedback
-      if (window.FarcadeSDK) {
-        window.FarcadeSDK.singlePlayer.actions.hapticFeedback();
+      for (let i = fallingBonuses.length - 1; i >= 0; i--) {
+        let bonus = fallingBonuses[i];
+        bonus.y += 3;
+        if (
+          bonus.y + BRICK_H / 4 >= PADDLE_Y &&
+          bonus.y + BRICK_H / 4 <= PADDLE_Y + PADDLE_H &&
+          bonus.x + BRICK_W / 2 >= paddle.x &&
+          bonus.x + BRICK_W / 2 <= paddle.x + paddle.w
+        ) {
+          const gameState = {
+            score: score,
+            lives: lives,
+            paddleX: paddle.x,
+            paddleW: paddle.w
+          };
+          bonus.effect(gameState);
+          score = gameState.score;
+          lives = gameState.lives;
+          fallingBonuses.splice(i, 1);
+        } else if (bonus.y > GAME_H) {
+          fallingBonuses.splice(i, 1);
+        }
       }
-      // (Phần còn lại giữ nguyên)
     }
 
-    // Các hàm game còn lại giữ nguyên
+    function drawBonusTexts() {
+      for (const textInfo of activeBonusTexts) {
+        let bonusText = document.createElementNS(SVG_NS, 'text');
+        bonusText.setAttribute('x', textInfo.x);
+        bonusText.setAttribute('y', textInfo.y);
+        bonusText.setAttribute('text-anchor', 'middle');
+        bonusText.setAttribute('font-family', 'VT323, monospace');
+        bonusText.setAttribute('font-size', '1.5em');
+        switch (textInfo.type) {
+          case 'life':
+            bonusText.textContent = '+1 LIFE';
+            bonusText.setAttribute('fill', 'var(--c64-bonus-purple)');
+            break;
+          case 'score':
+            bonusText.textContent = '+2000 PTS';
+            bonusText.setAttribute('fill', 'var(--c64-bonus-gold)');
+            break;
+          case 'paddle':
+            bonusText.textContent = 'LARGE PADDLE';
+            bonusText.setAttribute('fill', 'var(--c64-lightblue)');
+            break;
+        }
+        svg.appendChild(bonusText);
+      }
+    }
+
+    function updateBonusTexts() {
+      const currentTime = Date.now();
+      activeBonusTexts = activeBonusTexts.filter(textInfo => {
+        return currentTime - textInfo.startTime < BONUS_TEXT_DURATION;
+      });
+    }
+
+    function updateScoreboard() {
+      scoreEl.innerText = 'SCORE: ' + score.toString().padStart(5, '0');
+      if (lives !== lastLives) {
+        livesEl.innerText = 'LIVES: ' + lives;
+        livesEl.classList.add('life-change');
+        setTimeout(() => {
+          livesEl.classList.remove('life-change');
+        }, 300);
+        lastLives = lives;
+      } else {
+        livesEl.innerText = 'LIVES: ' + lives;
+      }
+      if (currentLevel !== lastLevel) {
+        levelEl.innerText = `LEVEL: ${currentLevel + 1}`;
+        levelEl.classList.add('level-change');
+        setTimeout(() => {
+          levelEl.classList.remove('level-change');
+        }, 400);
+        lastLevel = currentLevel;
+      } else {
+        levelEl.innerText = `LEVEL: ${currentLevel + 1}`;
+      }
+    }
+
+    function draw() {
+      clearSVG();
+      drawBricks();
+      drawPaddle();
+      drawBall();
+      drawFallingBonuses();
+      drawBonusTexts();
+      drawParticles();
+    }
+    resetAll();
+    draw();
+    requestAnimationFrame(tick);
+    restartBtn.addEventListener('click', () => {
+      resetAll();
+      draw();
+      requestAnimationFrame(tick);
+      document.body.classList.remove('no-cursor');
+    });
   </script>
 </body>
+
 </html>
