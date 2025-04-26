@@ -1,1290 +1,1249 @@
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>BRICKS BREAKER</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href=".">
+  <title>GALACTIC ATTACK</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
     :root {
-      --c64-bg: #6a5c9a;
-      --c64-darkblue: #352879;
-      --c64-lightblue: #7cb7ff;
-      --c64-yellow: #fff379;
-      --c64-orange: #ffb14e;
-      --c64-brick-red: #e7363e;
-      --c64-brick-orange: #E4863A;
-      --c64-brick-yellow: #f7e26b;
-      --c64-brick-cyan: #6ccff6;
-      --c64-brick-green: #57e227;
-      --c64-white: #ffffff;
-      --c64-grey: #b2b2b2;
-      --c64-brown: #8b5425;
-      --c64-bonus-purple: #a93de4;
-      --c64-bonus-gold: #ffd700;
+      --c64-black: #000000;
+      --c64-white: #FFFFFF;
+      --c64-dark-red: #68372B;
+      --c64-medium-red: #8B5429;
+      --c64-bright-red: #B86962;
+      --c64-dark-blue: #40318D;
+      --c64-medium-blue: #6F4F25;
+      --c64-bright-blue: #744FAF;
+      --c64-dark-green: #2F4F4F;
+      --c64-medium-green: #55A049;
+      --c64-bright-green: #94E044;
+      --c64-dark-cyan: #005B6B;
+      --c64-medium-cyan: #6F4F25;
+      --c64-bright-cyan: #7869C4;
+      --c64-orange: #BFB352;
+      --c64-yellow: #F0E68C;
+      --c64-purple: #744FAF;
+      --c64-pink: #B86962;
+      --c64-dark-grey: #404040;
+      --c64-medium-grey: #787878;
+      --c64-light-grey: #A0A0A0;
     }
 
-    html,
     body {
-      height: 100%;
+      background-color: var(--c64-dark-blue);
+      background-image:
+        linear-gradient(45deg,
+          var(--c64-dark-blue) 25%,
+          var(--c64-dark-grey) 25%,
+          var(--c64-dark-grey) 50%,
+          var(--c64-dark-blue) 50%,
+          var(--c64-dark-blue) 75%,
+          var(--c64-dark-grey) 75%,
+          var(--c64-dark-grey));
       margin: 0;
-      padding: 0;
-      box-sizing: border-box;
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    body {
-      background: var(--c64-bg);
-      background-attachment: fixed;
-      background-size: unset;
-      animation: none;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      color: var(--c64-yellow);
-      min-height: 100vh;
-      font-family: 'VT323', monospace;
-      flex-direction: column;
-    }
-
-    h1 {
-      margin-top: 16px;
-      margin-bottom: 20px;
-      font-size: 3.5em;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      font-weight: bold;
-      color: var(--c64-yellow);
-      text-shadow:
-        4px 4px 0 var(--c64-darkblue),
-        5px 5px 0 var(--c64-lightblue),
-        6px 6px 0 var(--c64-brick-red);
-      text-align: center;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: none;
-      animation: glitch-title 0.2s infinite alternate;
-      position: relative;
-      display: block;
-      width: 100%;
-      max-width: 420px;
-      box-sizing: border-box;
-    }
-
-    @keyframes glitch-title {
-      0% {
-        transform: skew(-1deg, 0);
-        text-shadow:
-          4px 4px 0 var(--c64-darkblue),
-          5px 5px 0 var(--c64-lightblue),
-          6px 6px 0 var(--c64-brick-red);
-      }
-
-      50% {
-        transform: skew(1deg, 0);
-        text-shadow:
-          3px 3px 0 var(--c64-darkblue),
-          4px 4px 0 var(--c64-lightblue),
-          5px 5px 0 var(--c64-brick-red);
-      }
-
-      100% {
-        transform: skew(-0.5deg, 0);
-        text-shadow:
-          5px 5px 0 var(--c64-darkblue),
-          6px 6px 0 var(--c64-lightblue),
-          7px 7px 0 var(--c64-brick-red);
-      }
-    }
-
-    #game-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: none;
-      box-shadow:
-        inset 0 0 20px rgba(0, 0, 0, 0.5),
-        inset 0 0 0 10px var(--c64-darkblue),
-        0 0 0 10px var(--c64-bg),
-        0 0 0 14px var(--c64-lightblue),
-        8px 8px 25px rgba(0, 0, 0, 0.5);
-      border-radius: 18px;
+      height: 100vh;
+      font-family: 'Press Start 2P', cursive;
       overflow: hidden;
-      position: relative;
-      width: 420px;
-      height: 500px;
-      max-width: 96vw;
-      max-height: 90vh;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.05) 1px,
-          transparent 1px),
-        linear-gradient(90deg,
-          rgba(255, 255, 255, 0.05) 1px,
-          transparent 1px);
-      background-size: 20px 20px;
-      touch-action: none;
+      background-blend-mode: multiply;
     }
 
-    #game-container::before {
+    body::before,
+    body::after {
       content: '';
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: repeating-linear-gradient(to bottom,
-          transparent 0px,
-          rgba(0, 0, 0, 0.8) 1px,
-          transparent 3px);
-      background-size: 100% 4px;
       pointer-events: none;
-      z-index: 10;
+      z-index: 1000;
     }
 
-    #scoreboard {
-      width: 100%;
-      background: linear-gradient(90deg,
-          var(--c64-darkblue),
-          var(--c64-bg));
-      padding: 8px 16px;
-      font-size: 1.8em;
-      border-bottom: 4px solid var(--c64-lightblue);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      text-shadow: 1px 1px 2px var(--c64-darkblue);
-      position: relative;
-      z-index: 1;
-      box-sizing: border-box;
+    body::before {
+      background: repeating-linear-gradient(0deg,
+          rgba(0, 0, 0, 0.1) 0px,
+          rgba(0, 0, 0, 0.1) 1px,
+          transparent 1px,
+          transparent 2px);
     }
 
-    #score,
-    #lives,
-    #level-display {
-      font-family: inherit;
-      padding: 2px 6px;
-      background-color: var(--c64-darkblue);
-      border-radius: 3px;
+    body::after {
+      background: repeating-linear-gradient(90deg,
+          rgba(255, 255, 255, 0.05) 0px,
+          rgba(255, 255, 255, 0.05) 1px,
+          transparent 1px,
+          transparent 2px);
+    }
+
+    .title {
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 36px;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: var(--c64-bright-cyan);
+      text-shadow:
+        4px 4px var(--c64-purple),
+        -3px -3px var(--c64-dark-red),
+        6px 6px var(--c64-medium-blue);
+      white-space: nowrap;
+      animation: title-pulse 2s infinite alternate,
+        title-glitch 2.5s infinite alternate;
+      background: linear-gradient(45deg,
+          var(--c64-bright-cyan),
+          var(--c64-purple),
+          var(--c64-bright-red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter:
+        drop-shadow(3px 3px 2px var(--c64-medium-blue)) brightness(1.1);
+      perspective: 400px;
+    }
+
+    @keyframes title-pulse {
+      0% {
+        transform: translateX(-50%) scale(1) rotateX(0deg);
+      }
+
+      50% {
+        transform: translateX(-50%) scale(1.05) rotateX(5deg);
+      }
+
+      100% {
+        transform: translateX(-50%) scale(1) rotateX(-5deg);
+      }
+    }
+
+    @keyframes title-glitch {
+      0% {
+        text-shadow:
+          4px 4px var(--c64-purple),
+          -3px -3px var(--c64-dark-red),
+          6px 6px var(--c64-medium-blue);
+      }
+
+      50% {
+        text-shadow:
+          -2px 2px var(--c64-dark-red),
+          3px -3px var(--c64-purple),
+          -5px 5px var(--c64-medium-blue);
+      }
+
+      100% {
+        text-shadow:
+          4px 4px var(--c64-purple),
+          -3px -3px var(--c64-dark-red),
+          6px 6px var(--c64-medium-blue);
+      }
+    }
+
+    .game-container {
       position: relative;
-      z-index: 2;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-      min-width: 60px;
-      text-align: center;
-      box-sizing: border-box;
+      padding: 20px;
+      background: linear-gradient(135deg,
+          var(--c64-black) 0%,
+          var(--c64-dark-grey) 100%);
+      border: 4px solid var(--c64-bright-cyan);
       box-shadow:
-        inset 1px 1px 3px rgba(0, 0, 0, 0.5),
-        inset -1px -1px 3px rgba(255, 255, 255, 0.2);
-    }
-
-    #score {
-      color: var(--c64-yellow);
-      border: 2px solid var(--c64-orange);
-      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
-    }
-
-    #lives {
-      color: var(--c64-brick-red);
-      border: 2px solid var(--c64-yellow);
-      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
-    }
-
-    #level-display {
-      color: var(--c64-brick-cyan);
-      border: 2px solid var(--c64-white);
-      text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
-    }
-
-    @keyframes life-pulse {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      50% {
-        transform: scale(1.1);
-        opacity: 0.8;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .life-change {
-      animation: life-pulse 0.3s ease-in-out;
-    }
-
-    @keyframes level-grow {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .level-change {
-      animation: level-grow 0.4s ease-in-out;
-    }
-
-    #game {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      display: block;
-      background: var(--c64-bg);
-    }
-
-    .c64-btn {
-      font-family: 'VT323', monospace;
-      font-size: 1.3em;
-      background: var(--c64-brick-yellow);
-      color: var(--c64-darkblue);
-      border: 3px solid var(--c64-yellow);
-      box-shadow: 2px 2px 0 var(--c64-darkblue);
-      border-radius: 4px;
-      padding: 3px 12px;
-      margin: 0 6px;
-      cursor: pointer;
-      margin-top: -40px;
-      position: relative;
-      z-index: 1;
-      text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
-    }
-
-    .c64-btn:active {
-      box-shadow: none;
-      transform: translate(2px, 2px);
-      background: var(--c64-orange);
-    }
-
-    #restart-btn {
-      font-size: 1.8em;
-      padding: 8px 24px;
-      margin-top: -60px;
-      background: var(--c64-brick-red);
-      color: var(--c64-yellow);
-      border-color: var(--c64-orange);
-      box-shadow: 3px 3px 0 var(--c64-darkblue);
-      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
-    }
-
-    #restart-btn:active {
-      box-shadow: none;
-      transform: translate(3px, 3px);
-      background: var(--c64-orange);
-      color: var(--c64-darkblue);
-    }
-
-    .instructions-block {
-      margin-top: 1.8em;
-      text-align: center;
-      width: 100%;
-      max-width: 420px;
-      box-sizing: border-box;
-      color: var(--c64-white);
-      font-size: 1.15em;
-      text-shadow: 1px 1px 0 var(--c64-darkblue);
-      background: var(--c64-darkblue);
-      border: 3px solid var(--c64-yellow);
-      box-shadow: 2px 2px 0 var(--c64-orange);
+        0 0 10px var(--c64-medium-cyan),
+        inset 0 0 20px var(--c64-medium-blue);
       border-radius: 8px;
-      padding: 12px 18px;
-      position: relative;
-      z-index: 1;
     }
 
-    .instructions-block b {
+    .score,
+    .lives {
+      position: absolute;
+      top: -40px;
+      font-size: 14px;
+      color: var(--c64-bright-green);
+      text-shadow: 2px 2px var(--c64-dark-blue);
+    }
+
+    .score {
+      left: 20px;
+    }
+
+    .lives {
+      right: 20px;
+    }
+
+    #gameCanvas {
+      border: 8px solid var(--c64-bright-cyan);
+      background-color: var(--c64-black);
+      box-shadow:
+        0 0 20px var(--c64-medium-cyan),
+        inset 0 0 30px var(--c64-medium-blue);
+      image-rendering: pixelated;
+      border-radius: 4px;
+    }
+
+    .alien {
+      fill: var(--c64-bright-blue);
+      filter: drop-shadow(0 0 3px var(--c64-medium-cyan));
+    }
+
+    .boss {
+      fill: var(--c64-bright-red);
+      filter: drop-shadow(0 0 5px var(--c64-medium-red));
+    }
+
+    .player {
+      fill: var(--c64-yellow);
+      filter: drop-shadow(0 0 3px var(--c64-orange));
+    }
+
+    .bullet {
+      fill: var(--c64-orange);
+      filter: drop-shadow(0 0 2px var(--c64-yellow));
+    }
+
+    .alien-bullet {
+      fill: var(--c64-pink);
+      filter: drop-shadow(0 0 2px var(--c64-dark-red));
+    }
+
+    .shield-powerup {
+      fill: var(--c64-bright-cyan) !important;
+    }
+
+    .life-powerup {
+      fill: var(--c64-bright-red) !important;
+    }
+
+    .rapid-fire-powerup {
+      fill: var(--c64-bright-green) !important;
+    }
+
+    .diving {
+      animation: dive 2s linear;
+    }
+
+    @keyframes dive {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+
+      50% {
+        transform: translate(-100px, 200px) rotate(-90deg);
+      }
+
+      100% {
+        transform: translate(-200px, 400px) rotate(-180deg);
+      }
+    }
+
+    .alien.returning {
+      transition: transform 0.5s ease-in-out;
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .start-screen {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--c64-white);
+      text-align: center;
+      animation: blink 1.2s infinite;
+      font-size: 14px;
+      line-height: 2;
+      text-shadow: 2px 2px var(--c64-dark-blue);
+    }
+
+    @keyframes explode {
+      0% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+
+      50% {
+        opacity: 0.8;
+        transform: scale(1.8) rotate(45deg);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(2.5) rotate(90deg);
+      }
+    }
+
+    .explosion {
+      animation: explode 0.5s forwards;
+    }
+
+    .explosion-particle {
+      fill: var(--c64-orange);
+      filter: drop-shadow(0 0 2px var(--c64-red));
+    }
+
+    .game-over {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--c64-red);
+      text-align: center;
+      font-size: 24px;
+      line-height: 2;
+      text-shadow: 2px 2px var(--c64-dark-grey);
+      background-color: var(--c64-black);
+      padding: 20px;
+      border: 4px solid var(--c64-red);
+      display: none;
+    }
+
+    .game-over span {
       color: var(--c64-yellow);
-      text-shadow: 1px 1px 0 var(--c64-brick-red);
+      font-size: 16px;
+      display: block;
+      margin-top: 10px;
+      animation: blink 1.2s infinite;
     }
 
-    @media (max-width: 530px) {
-      #game-container {
-        width: 100vw;
-        height: 80vw;
-        min-height: 360px;
-        min-width: 240px;
-        background-size: 100% 4px;
+    @keyframes crt-flicker {
+      0% {
+        opacity: 0.98;
       }
 
-      #scoreboard {
-        font-size: 1.5em;
-        padding: 6px 10px;
+      25% {
+        opacity: 1;
       }
 
-      #score,
-      #lives,
-      #level-display {
-        padding: 1px 4px;
+      50% {
+        opacity: 0.99;
       }
 
-      h1 {
-        font-size: 3em;
-        width: 100vw;
-        max-width: none;
-        margin-bottom: 10px;
+      75% {
+        opacity: 0.98;
       }
 
-      .instructions-block {
-        width: 100vw;
-        max-width: none;
-        padding: 12px 10px;
-        margin-top: 1em;
-      }
-
-      #restart-btn {
-        margin-top: -50px;
+      100% {
+        opacity: 1;
       }
     }
 
-    body.no-cursor {
-      cursor: none;
+    @keyframes powerup-glow {
+      0% {
+        filter: drop-shadow(0 0 5px var(--c64-bright-green)) brightness(1);
+      }
+
+      50% {
+        filter: drop-shadow(0 0 10px var(--c64-yellow)) brightness(1.2);
+      }
+
+      100% {
+        filter: drop-shadow(0 0 5px var(--c64-bright-green)) brightness(1);
+      }
+    }
+
+    .powerup {
+      animation: powerup-glow 1.5s infinite;
+    }
+
+    .shield {
+      stroke: var(--c64-bright-cyan);
+      stroke-width: 2;
+      fill: none;
+      animation: shield-pulse 1s infinite alternate;
+    }
+
+    @keyframes shield-pulse {
+      from {
+        opacity: 0.6;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes boss-warning {
+      0% {
+        fill: var(--c64-bright-red);
+      }
+
+      50% {
+        fill: var(--c64-medium-red);
+      }
+
+      100% {
+        fill: var(--c64-bright-red);
+      }
+    }
+
+    .boss-warning {
+      animation: boss-warning 0.5s infinite;
+    }
+
+    .boss-special-attack {
+      animation: boss-special-attack 0.5s infinite alternate;
+    }
+
+    @keyframes boss-special-attack {
+      0% {
+        fill: var(--c64-bright-red);
+      }
+
+      50% {
+        fill: var(--c64-purple);
+      }
+
+      100% {
+        fill: var(--c64-bright-blue);
+      }
+    }
+
+    .boss-special-bullet {
+      fill: var(--c64-bright-cyan);
+      filter: drop-shadow(0 0 3px var(--c64-medium-cyan));
+    }
+
+    .credit {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      font-size: 10px;
+      color: var(--c64-medium-grey);
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .credit a {
+      color: var(--c64-bright-cyan);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .credit a:hover {
+      color: var(--c64-yellow);
+      text-decoration: underline;
     }
   </style>
 </head>
 
 <body>
-  <h1>BRICKS BREAKER</h1>
-  <div id="game-container">
-    <div id="scoreboard">
-      <span id="score">SCORE: 00000</span>
-      <span id="lives">LIVES: 3</span>
-      <span id="level-display">LEVEL: 1</span>
+  <div class="game-container">
+    <div class="title">GALACTIC ATTACK</div>
+    <div class="score">SCORE: <span id="scoreValue">0</span></div>
+    <div class="lives">LIVES: <span id="livesValue">3</span></div>
+    <svg id="gameCanvas" width="600" height="800" viewBox="0 0 600 800">
+      <defs>
+        <path id="alienPath1" d="M10,20 L5,15 L0,10 L5,5 L15,5 L20,10 L15,15 L10,20 M5,5 L0,0 L20,0 L15,5 M8,15 L12,15 L12,12 L8,12 Z M3,10 L7,10 L7,8 L3,8 Z M13,10 L17,10 L17,8 L13,8 Z" />
+        <path id="alienPath2" d="M10,20 L0,10 L10,0 L20,10 L10,20 Z M5,0 L5,20 L15,20 L15,0 Z" />
+        <path id="alienPath3" d="M0,10 L10,20 L20,10 L10,0 L0,10 Z M5,20 L5,0 L15,0 L15,20 Z" />
+        <path id="bossPath" d="M15,30 L7,22 L0,15 L7,8 L23,8 L30,15 L23,22 L15,30 M7,8 L0,0 L30,0 L23,8 M10,22 L20,22 L20,15 L10,15 Z M5,15 L10,15 L10,12 L5,12 Z M20,15 L25,15 L25,12 L20,12 Z" />
+        <path id="playerPath" d="M12,0 L6,6 L0,12 L6,18 L18,18 L24,12 L18,6 L12,0 M6,18 L0,24 L24,24 L18,18 M10,6 L14,6 L14,12 L10,12 Z M4,12 L8,12 L8,15 L4,15 Z M16,12 L20,12 L20,15 L16,15 Z" />
+      </defs>
+      <g id="gameElements" />
+    </svg>
+    <div class="start-screen" id="startScreen">
+      + COMMANDS +<br>
+      ~~~~~~~~~~~~<br>
+      <br>
+      &#x2190; &#x2192; TO MOVE<br>
+      SPACE TO FIRE<br>
+      <br>
+      PRESS SPACE TO BEGIN
     </div>
-    <svg id="game" viewBox="0 0 408 480"></svg>
-    <button id="restart-btn" class="c64-btn" style="display:none;">REPLAY</button>
-  </div>
-  <div class="instructions-block">
-    &nbsp;<b>SPACE</b> to launch the ball.<br>
-    <b>LEFT</b>/<b>RIGHT</b> to move the paddle.<br>
-    <b>Destroy all bricks!</b>
-    <p style="margin-top: 12px; margin-bottom: 0; font-size: 0.8em; text-align: center; color: var(--c64-grey);">
-      <a href="https://codepen.io/H-L-the-lessful" target="_blank" style="color: inherit; text-decoration: none;">
-        CODE by HL
-      </a>
-    </p>
+    <div class="game-over" id="gameOverScreen">
+      GAME OVER
+      <span>PRESS SPACE TO RESTART</span>
+    </div>
+    <div class="credit">
+      CODE by <a href="https://codepen.io/H-L-the-lessful" target="_blank">HL</a>
+    </div>
   </div>
 
-  <script type="module">
-    const SVG_NS = "http://www.w3.org/2000/svg";
-    const GAME_W = 408,
-      GAME_H = 480;
-    let PADDLE_W = 64,
-      PADDLE_H = 12,
-      PADDLE_Y = GAME_H - 36;
-    const BALL_SIZE = 10;
-    const BRICK_W = 30,
-      BRICK_H = 18,
-      BRICK_PAD_X = 4,
-      BRICK_PAD_Y = 3;
-    const BRICK_OFFSET_Y = 40;
-    const START_LIVES = 3;
-    let originalPaddleWidth = 64;
-    const BONUS_TEXT_DURATION = 1000;
-    const SOUND_VOLUME = 0.3;
-    const BOUNDS_X_MIN = -20;
-    const BOUNDS_X_MAX = GAME_W + 20;
-    const BRICK_COLORS = [
-      'var(--c64-brick-red)',
-      'var(--c64-brick-orange)',
-      'var(--c64-brick-yellow)',
-      'var(--c64-brick-cyan)',
-      'var(--c64-brick-green)'
-    ];
-    const LEVELS = [{
-        rows: 7,
-        cols: 12,
-        difficulty: 1,
-        layout: [
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        ]
-      },
-      {
-        rows: 8,
-        cols: 13,
-        difficulty: 1.2,
-        layout: [
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-          [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1],
-          [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-          [1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
-          [1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1],
-          [1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        ]
-      },
-      {
-        rows: 9,
-        cols: 14,
-        difficulty: 1.4,
-        layout: [
-          [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-          [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
-          [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-          [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-          [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-        ]
+  <script>
+    const GAME_WIDTH = 600;
+    const GAME_HEIGHT = 800;
+    const PLAYER_SPEED = 3;
+    const BULLET_SPEED = 5;
+    const ALIEN_SPEED = 0.8;
+    const DIVE_CHANCE = 0.001;
+    const ALIEN_SHOOT_CHANCE = 0.0008;
+    const POWERUP_SPAWN_CHANCE = 0.002;
+    const SHIELD_DURATION = 5000;
+    const BOSS_WAVE_INTERVAL = 3;
+    class SoundEffects {
+      constructor() {
+        this.ctx = new(window.AudioContext || window.webkitAudioContext)();
       }
-    ];
-    let currentLevel = 0;
-    const BONUS_TYPES = [{
-        color: 'var(--c64-bonus-purple)',
-        effect: (gameState) => {
-          gameState.lives++;
-          activeBonusTexts.push({
-            type: 'life',
-            x: gameState.paddleX + gameState.paddleW / 2,
-            y: PADDLE_Y - 20,
-            startTime: Date.now()
+      playShoot() {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(150, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(40, this.ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.1);
+      }
+      playExplosion() {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(80, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.3);
+      }
+      playPowerupCollect() {
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gainNode = this.ctx.createGain();
+        osc1.type = 'sine';
+        osc2.type = 'triangle';
+        osc1.frequency.setValueAtTime(880, this.ctx.currentTime);
+        osc2.frequency.setValueAtTime(1320, this.ctx.currentTime);
+        gainNode.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.5);
+        osc1.connect(gainNode);
+        osc2.connect(gainNode);
+        gainNode.connect(this.ctx.destination);
+        osc1.start();
+        osc2.start();
+        osc1.stop(this.ctx.currentTime + 0.3);
+        osc2.stop(this.ctx.currentTime + 0.3);
+      }
+      playLifeLoss() {
+        const osc = this.ctx.createOscillator();
+        const gainNode = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(110, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(55, this.ctx.currentTime + 0.2);
+        gainNode.gain.setValueAtTime(0.4, this.ctx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+        osc.connect(gainNode);
+        gainNode.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.4);
+      }
+    }
+    class Explosion {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.particles = [];
+        this.lifetime = 0;
+        this.maxLifetime = 40;
+        for (let i = 0; i < 12; i++) {
+          const angle = i * Math.PI * 2 / 12;
+          const speed = 2 + Math.random() * 2;
+          this.particles.push({
+            x: Math.cos(angle) * 5,
+            y: Math.sin(angle) * 5,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: 2 + Math.random() * 3
           });
-          playSound(600, 0.2, 'square');
-          playSound(800, 0.2, 'square', 0.1);
-        },
-        description: 'Life Bonus'
-      },
-      {
-        color: 'var(--c64-bonus-gold)',
-        effect: (gameState) => {
-          gameState.score += 2000;
-          activeBonusTexts.push({
-            type: 'score',
-            x: gameState.paddleX + gameState.paddleW / 2,
-            y: PADDLE_Y - 20,
-            startTime: Date.now()
-          });
-          playSound(1000, 0.15, 'sine');
-          playSound(1200, 0.15, 'sine', 0.05);
-        },
-        description: 'Points Bonus'
-      },
-      {
-        color: 'var(--c64-lightblue)',
-        effect: (gameState) => {
-          PADDLE_W = originalPaddleWidth * 1.5;
-          paddle.w = PADDLE_W;
-          activeBonusTexts.push({
-            type: 'paddle',
-            x: gameState.paddleX + gameState.paddleW / 2,
-            y: PADDLE_Y - 20,
-            startTime: Date.now()
-          });
-          clearTimeout(window.paddleTimeoutId);
-          window.paddleTimeoutId = setTimeout(() => {
-            PADDLE_W = originalPaddleWidth;
-            paddle.w = PADDLE_W;
-            window.paddleTimeoutId = null;
-          }, 5000);
-          playSound(440, 0.1, 'sawtooth');
-          playSound(550, 0.1, 'sawtooth', 0.05);
-          playSound(660, 0.1, 'sawtooth', 0.1);
-        },
-        description: 'Paddle Bonus'
-      }
-    ];
-    let paddle = {
-      x: (GAME_W - PADDLE_W) / 2,
-      w: PADDLE_W
-    };
-    let ball = {
-      x: 0,
-      y: 0,
-      dx: 0,
-      dy: 0,
-      moving: false
-    };
-    let bricks = [];
-    let score = 0,
-      lives = START_LIVES;
-    let rightPressed = false,
-      leftPressed = false;
-    let gameOver = false;
-    const fallingBonuses = [];
-    let activeBonusTexts = [];
-    let particles = [];
-    let lastLives = START_LIVES;
-    let lastLevel = 0;
-    let audioContext;
-
-    function initAudio() {
-      if (!audioContext) {
-        audioContext = new(window.AudioContext || window.webkitAudioContext)();
-      }
-    }
-
-    function playSound(frequency, duration, type = 'square', delay = 0, volume = SOUND_VOLUME) {
-      initAudio();
-      if (!audioContext) return;
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      oscillator.type = type;
-      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime + delay);
-      gainNode.gain.setValueAtTime(volume, audioContext.currentTime + delay);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + delay + duration);
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      oscillator.start(audioContext.currentTime + delay);
-      oscillator.stop(audioContext.currentTime + delay + duration);
-    }
-    const svg = document.getElementById('game');
-    const scoreEl = document.getElementById('score');
-    const livesEl = document.getElementById('lives');
-    const restartBtn = document.getElementById('restart-btn');
-    let levelEl = document.getElementById('level-display');
-    if (!levelEl) {
-      levelEl = document.createElement('span');
-      levelEl.id = 'level-display';
-      document.getElementById('scoreboard').appendChild(levelEl);
-    }
-
-    function resetBricks() {
-      const level = LEVELS[currentLevel];
-      bricks = [];
-      const totalBrickWallWidth = level.cols * (BRICK_W + BRICK_PAD_X) - BRICK_PAD_X;
-      const totalBrickWallHeight = level.rows * (BRICK_H + BRICK_PAD_Y) - BRICK_PAD_Y;
-      const startX = (GAME_W - totalBrickWallWidth) / 2;
-      const startY = BRICK_OFFSET_Y;
-      for (let r = 0; r < level.rows; r++) {
-        let row = [];
-        for (let c = 0; c < level.cols; c++) {
-          if (level.layout[r] && level.layout[r][c] === 1) {
-            const bonusProbability = 0.05 + (currentLevel * 0.02);
-            const isBonusBrick = Math.random() < bonusProbability;
-            const bonusType = isBonusBrick ?
-              BONUS_TYPES[Math.floor(Math.random() * BONUS_TYPES.length)] :
-              null;
-            row.push({
-              x: startX + c * (BRICK_W + BRICK_PAD_X),
-              y: startY + r * (BRICK_H + BRICK_PAD_Y),
-              hit: false,
-              color: BRICK_COLORS[r % BRICK_COLORS.length],
-              bonus: bonusType
-            });
-          } else {
-            row.push(null);
-          }
-        }
-        bricks.push(row);
-      }
-      bricks.all = bricks.flat().filter(b => b !== null);
-    }
-
-    function resetPaddleBall() {
-      PADDLE_W = originalPaddleWidth;
-      paddle.w = PADDLE_W;
-      paddle.x = (GAME_W - paddle.w) / 2;
-      ball.x = paddle.x + paddle.w / 2 - BALL_SIZE / 2;
-      ball.y = PADDLE_Y - BALL_SIZE;
-      ball.dx = 3 * (Math.random() < 0.5 ? 1 : -1) * LEVELS[currentLevel].difficulty;
-      ball.dy = -4 * LEVELS[currentLevel].difficulty;
-      ball.moving = false;
-      clearTimeout(window.paddleTimeoutId);
-      window.paddleTimeoutId = null;
-    }
-
-    function resetAll() {
-      score = 0;
-      lives = START_LIVES;
-      gameOver = false;
-      currentLevel = 0;
-      resetBricks();
-      resetPaddleBall();
-      fallingBonuses.length = 0;
-      activeBonusTexts.length = 0;
-      particles.length = 0;
-      lastLives = lives;
-      lastLevel = currentLevel;
-      updateScoreboard();
-      restartBtn.style.display = "none";
-      if (audioContext) {
-        try {
-          if (audioContext.state !== 'closed') {
-            audioContext.close().then(() => {
-              console.log("AudioContext closed.");
-              audioContext = null;
-            }).catch(e => {
-              console.error("Error closing audio context:", e);
-            });
-          } else {
-            audioContext = null;
-          }
-        } catch (e) {
-          console.error("Error trying to close audio context:", e);
-          audioContext = null;
         }
       }
-    }
-
-    function clearSVG() {
-      const defsElement = svg.querySelector('defs');
-      const childrenToRemove = Array.from(svg.children).filter(child => child !== defsElement);
-      for (const child of childrenToRemove) {
-        svg.removeChild(child);
+      update() {
+        this.lifetime++;
+        this.particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+        });
+        return this.lifetime < this.maxLifetime;
       }
-      drawBrickGradients();
-      drawPaddleGradient();
-      drawBallGradient();
-    }
-
-    function drawBricks() {
-      for (let row of bricks)
-        for (let brick of row)
-          if (brick && !brick.hit) {
-            let b = document.createElementNS(SVG_NS, 'rect');
-            b.setAttribute('x', brick.x);
-            b.setAttribute('y', brick.y);
-            b.setAttribute('width', BRICK_W);
-            b.setAttribute('height', BRICK_H);
-            b.setAttribute('rx', 3);
-            const brickColorId = CSS.escape(brick.color.replace(/[()#,]/g, '').replace(/var--/g, '').replace(/-/g, '_'));
-            b.setAttribute('fill', brick.bonus ? brick.bonus.color : `url(#brick-grad-${brickColorId})`);
-            b.setAttribute('stroke', brick.bonus ? 'var(--c64-white)' : 'var(--c64-brown)');
-            b.setAttribute('stroke-width', brick.bonus ? 2.5 : 1.7);
-            svg.appendChild(b);
-          }
-    }
-
-    function drawBrickGradients() {
-      let defs = svg.querySelector('defs');
-      if (!defs) {
-        defs = document.createElementNS(SVG_NS, 'defs');
-        svg.appendChild(defs);
-      }
-      for (let c of [...new Set(BRICK_COLORS)]) {
-        const colorId = CSS.escape(c.replace(/[()#,]/g, '').replace(/var--/g, '').replace(/-/g, '_'));
-        if (!defs.querySelector(`#brick-grad-${colorId}`)) {
-          let grad = document.createElementNS(SVG_NS, 'linearGradient');
-          grad.id = "brick-grad-" + colorId;
-          grad.setAttribute("x1", "0%");
-          grad.setAttribute("x2", "100%");
-          grad.setAttribute("y1", "0%");
-          grad.setAttribute("y2", "100%");
-          let stops = [{
-              o: "0%",
-              color: shade(c, 1.12)
-            },
-            {
-              o: "18%",
-              color: shade(c, 1.0)
-            },
-            {
-              o: "68%",
-              color: shade(c, 0.94)
-            },
-            {
-              o: "100%",
-              color: shade(c, 0.82)
-            }
-          ];
-          for (let s of stops) {
-            let stop = document.createElementNS(SVG_NS, 'stop');
-            stop.setAttribute("offset", s.o);
-            stop.setAttribute("stop-color", s.color);
-            grad.appendChild(stop);
-          }
-          defs.appendChild(grad);
-        }
-      }
-      for (let bonusType of BONUS_TYPES) {
-        const colorId = CSS.escape(bonusType.color.replace(/[()#,]/g, '').replace(/var--/g, '').replace(/-/g, '_'));
-        if (!defs.querySelector(`#bonus-grad-${colorId}`)) {
-          let grad = document.createElementNS(SVG_NS, 'linearGradient');
-          grad.id = "bonus-grad-" + colorId;
-          grad.setAttribute("x1", "0%");
-          grad.setAttribute("x2", "100%");
-          grad.setAttribute("y1", "0%");
-          grad.setAttribute("y2", "100%");
-          let stops = [{
-              o: "0%",
-              color: shade(bonusType.color, 1.1)
-            },
-            {
-              o: "50%",
-              color: bonusType.color
-            },
-            {
-              o: "100%",
-              color: shade(bonusType.color, 0.9)
-            }
-          ];
-          for (let s of stops) {
-            let stop = document.createElementNS(SVG_NS, 'stop');
-            stop.setAttribute("offset", s.o);
-            stop.setAttribute("stop-color", s.color);
-            grad.appendChild(stop);
-          }
-          defs.appendChild(grad);
-        }
-      }
-    }
-
-    function shade(raw, f) {
-      const styleEl = document.createElement("div");
-      styleEl.style.color = raw;
-      document.body.appendChild(styleEl);
-      const computedColor = getComputedStyle(styleEl).color;
-      document.body.removeChild(styleEl);
-      const rgbMatch = computedColor.match(/\d+/g);
-      if (!rgbMatch) return raw;
-      let rgb = rgbMatch.map(Number);
-      return `rgb(${rgb.map(x=>Math.min(255, Math.max(0, Math.round(x * f)))).join(',')})`;
-    }
-
-    function drawPaddle() {
-      let paddleRect = document.createElementNS(SVG_NS, 'rect');
-      paddleRect.setAttribute('x', paddle.x);
-      paddleRect.setAttribute('y', PADDLE_Y);
-      paddleRect.setAttribute('width', paddle.w);
-      paddleRect.setAttribute('height', PADDLE_H);
-      paddleRect.setAttribute('fill', 'url(#paddle-grad)');
-      paddleRect.setAttribute('rx', 7);
-      paddleRect.setAttribute('stroke', 'var(--c64-lightblue)');
-      paddleRect.setAttribute('stroke-width', 2);
-      svg.appendChild(paddleRect);
-    }
-
-    function drawPaddleGradient() {
-      let defs = svg.querySelector('defs');
-      if (!defs) {
-        defs = document.createElementNS(SVG_NS, 'defs');
-        svg.appendChild(defs);
-      }
-      if (!defs.querySelector('#paddle-grad')) {
-        let grad = document.createElementNS(SVG_NS, 'linearGradient');
-        grad.id = "paddle-grad";
-        grad.setAttribute("x1", "0%");
-        grad.setAttribute("x2", "100%");
-        grad.setAttribute("y1", "15%");
-        grad.setAttribute("y2", "100%");
-        let stops = [{
-            o: "0%",
-            color: "var(--c64-lightblue)"
-          },
-          {
-            o: "39%",
-            color: "var(--c64-grey)"
-          },
-          {
-            o: "77%",
-            color: "var(--c64-bg)"
-          },
-          {
-            o: "100%",
-            color: "var(--c64-darkblue)"
-          }
-        ];
-        for (let s of stops) {
-          let stop = document.createElementNS(SVG_NS, 'stop');
-          stop.setAttribute("offset", s.o);
-          stop.setAttribute("stop-color", s.color);
-          grad.appendChild(stop);
-        }
-        defs.appendChild(grad);
-      }
-    }
-
-    function drawBall() {
-      let ballCir = document.createElementNS(SVG_NS, 'circle');
-      ballCir.setAttribute('cx', ball.x + BALL_SIZE / 2);
-      ballCir.setAttribute('cy', ball.y + BALL_SIZE / 2);
-      ballCir.setAttribute('r', BALL_SIZE / 2);
-      ballCir.setAttribute('fill', 'url(#ball-grad)');
-      ballCir.setAttribute('stroke', 'var(--c64-yellow)');
-      ballCir.setAttribute('stroke-width', "2");
-      svg.appendChild(ballCir);
-    }
-
-    function drawBallGradient() {
-      let defs = svg.querySelector('defs');
-      if (!defs) {
-        defs = document.createElementNS(SVG_NS, 'defs');
-        svg.appendChild(defs);
-      }
-      if (!defs.querySelector('#ball-grad')) {
-        let grad = document.createElementNS(SVG_NS, 'radialGradient');
-        grad.id = "ball-grad";
-        grad.setAttribute("cx", "31%");
-        grad.setAttribute("cy", "35%");
-        grad.setAttribute("r", "65%");
-        let stops = [{
-            o: "0%",
-            color: "var(--c64-white)"
-          },
-          {
-            o: "50%",
-            color: "var(--c64-yellow)"
-          },
-          {
-            o: "100%",
-            color: "var(--c64-orange)"
-          }
-        ];
-        for (let s of stops) {
-          let st = document.createElementNS(SVG_NS, 'stop');
-          st.setAttribute("offset", s.o);
-          st.setAttribute("stop-color", s.color);
-          grad.appendChild(st);
-        }
-        defs.appendChild(grad);
-      }
-    }
-
-    function drawFallingBonuses() {
-      for (const bonus of fallingBonuses) {
-        let bonusRect = document.createElementNS(SVG_NS, 'rect');
-        bonusRect.setAttribute('x', bonus.x);
-        bonusRect.setAttribute('y', bonus.y);
-        bonusRect.setAttribute('width', BRICK_W);
-        bonusRect.setAttribute('height', BRICK_H);
-        bonusRect.setAttribute('rx', 4);
-        bonusRect.setAttribute('fill', bonus.color);
-        bonusRect.setAttribute('stroke', 'var(--c64-white)');
-        bonusRect.setAttribute('stroke-width', 2);
-        bonusRect.setAttribute('opacity', 0.9);
-        let animate = document.createElementNS(SVG_NS, 'animate');
-        animate.setAttribute('attributeName', 'opacity');
-        animate.setAttribute('values', '0.9;0.5;0.9');
-        animate.setAttribute('dur', '0.8s');
-        animate.setAttribute('repeatCount', 'indefinite');
-        bonusRect.appendChild(animate);
-        svg.appendChild(bonusRect);
-      }
-    }
-
-    function drawParticles() {
-      for (const particle of particles) {
-        let p = document.createElementNS(SVG_NS, 'circle');
-        p.setAttribute('cx', particle.x);
-        p.setAttribute('cy', particle.y);
-        p.setAttribute('r', particle.size / 2);
-        p.setAttribute('fill', particle.color);
-        p.setAttribute('opacity', particle.life);
-        svg.appendChild(p);
-      }
-    }
-
-    function tick() {
-      if (gameOver) return;
-      updateBonusTexts();
-      updateFallingBonuses();
-      updateParticles();
-      if (rightPressed) paddle.x = Math.min(BOUNDS_X_MAX - paddle.w, paddle.x + 6);
-      if (leftPressed) paddle.x = Math.max(BOUNDS_X_MIN, paddle.x - 6);
-      if (ball.moving) {
-        ball.x += ball.dx;
-        ball.y += ball.dy;
-        if (ball.x <= BOUNDS_X_MIN) {
-          ball.x = BOUNDS_X_MIN;
-          ball.dx *= -1;
-          playSound(400, 0.05);
-        }
-        if (ball.x + BALL_SIZE >= BOUNDS_X_MAX) {
-          ball.x = BOUNDS_X_MAX - BALL_SIZE;
-          ball.dx *= -1;
-          playSound(400, 0.05);
-        }
-        if (ball.y <= 0) {
-          ball.y = 0;
-          ball.dy *= -1;
-          playSound(400, 0.05);
-        }
-        if (
-          ball.y + BALL_SIZE >= PADDLE_Y &&
-          ball.y + BALL_SIZE <= PADDLE_Y + PADDLE_H + 4 &&
-          ball.x + BALL_SIZE / 2 >= paddle.x &&
-          ball.x + BALL_SIZE / 2 <= paddle.x + paddle.w
-        ) {
-          ball.dy = -Math.abs(ball.dy);
-          const hitPos = (ball.x + BALL_SIZE / 2) - paddle.x;
-          const normalizedHitPos = hitPos / paddle.w;
-          ball.dx = (normalizedHitPos - 0.5) * 2 * 5 * LEVELS[currentLevel].difficulty;
-          ball.y = PADDLE_Y - BALL_SIZE - 1;
-          playSound(300, 0.08);
-        }
-        let brickHit = null;
-        outer:
-          for (let r = 0; r < bricks.length; r++)
-            for (let c = 0; c < bricks[r].length; c++) {
-              let brick = bricks[r][c];
-              if (!brick || brick.hit) continue;
-              let bx = brick.x,
-                by = brick.y;
-              if (
-                ball.x + BALL_SIZE > bx && ball.x < bx + BRICK_W &&
-                ball.y + BALL_SIZE > by && ball.y < by + BRICK_H
-              ) {
-                brick.hit = true;
-                brickHit = {
-                  r,
-                  c,
-                  brick
-                };
-                let levelMultiplier = LEVELS[currentLevel].difficulty;
-                score += Math.round(50 * levelMultiplier * (bricks.length - r));
-                createParticleExplosion(brick);
-                playSound(150, 0.1, 'sawtooth');
-                if (brick.bonus) {
-                  fallingBonuses.push({
-                    x: brick.x,
-                    y: brick.y,
-                    color: brick.bonus.color,
-                    effect: brick.bonus.effect
-                  });
-                }
-                if (ball.x + BALL_SIZE - ball.dx <= bx && ball.x + BALL_SIZE > bx) {
-                  ball.dx *= -1;
-                  ball.x = bx - BALL_SIZE - 0.1;
-                } else if (ball.x - ball.dx >= bx + BRICK_W && ball.x < bx + BRICK_W) {
-                  ball.dx *= -1;
-                  ball.x = bx + BRICK_W + 0.1;
-                } else if (ball.y + BALL_SIZE - ball.dy <= by && ball.y + BALL_SIZE > by) {
-                  ball.dy *= -1;
-                  ball.y = by - BALL_SIZE - 0.1;
-                } else if (ball.y - ball.dy >= by + BRICK_H && ball.y < by + BRICK_H) {
-                  ball.dy *= -1;
-                  ball.y = by + BRICK_H + 0.1;
-                } else {
-                  ball.dy *= -1;
-                }
-                playSound(500, 0.05);
-                if (bricks.flat().filter(b => b !== null).every(b => b.hit)) {
-                  gameOver = true;
-                  setTimeout(() => showGameOver(true), 300);
-                  return;
-                }
-                updateScoreboard();
-                break outer;
-              }
-            }
-        if (ball.y > GAME_H) {
-          playSound(100, 0.4, 'triangle', 0, 0.5);
-          playSound(80, 0.5, 'square', 0.1, 0.6);
-          lives -= 1;
-          updateScoreboard();
-          if (lives <= 0) {
-            gameOver = true;
-            setTimeout(() => showGameOver(false), 300);
-          } else {
-            resetPaddleBall();
-          }
-        }
-      } else {
-        ball.x = paddle.x + paddle.w / 2 - BALL_SIZE / 2;
-      }
-      draw();
-      requestAnimationFrame(tick);
-    }
-
-    function createParticleExplosion(brick) {
-      const particleCount = 15;
-      const brickCenterX = brick.x + BRICK_W / 2;
-      const brickCenterY = brick.y + BRICK_H / 2;
-      const baseColor = brick.color;
-      for (let i = 0; i < particleCount; i++) {
-        const angle = Math.random() * Math.PI;
-        const speed = Math.random() * 4 + 1;
-        const dx = Math.cos(angle) * speed * (Math.random() < 0.5 ? 1 : -1) * 0.8;
-        const dy = Math.sin(angle) * speed * 1.2;
-        particles.push({
-          x: brickCenterX,
-          y: brickCenterY,
-          dx: dx,
-          dy: dy,
-          color: shade(baseColor, 1 + Math.random() * 0.3),
-          size: Math.random() * 3 + 1,
-          life: 1
+      render(container) {
+        const opacity = 1 - this.lifetime / this.maxLifetime;
+        this.particles.forEach(p => {
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          rect.setAttributeNS(null, 'x', this.x + p.x);
+          rect.setAttributeNS(null, 'y', this.y + p.y);
+          rect.setAttributeNS(null, 'width', p.size);
+          rect.setAttributeNS(null, 'height', p.size);
+          rect.setAttributeNS(null, 'opacity', opacity);
+          rect.classList.add('explosion-particle');
+          container.appendChild(rect);
         });
       }
     }
-    const gravity = 0.1;
-    const friction = 0.99;
-    const lifeDecay = 0.03;
-
-    function updateParticles() {
-      for (let i = particles.length - 1; i >= 0; i--) {
-        let p = particles[i];
-        p.dy += gravity;
-        p.dx *= friction;
-        p.dy *= friction;
-        p.x += p.dx;
-        p.y += p.dy;
-        p.life -= lifeDecay;
-        p.size -= lifeDecay * 2;
-        if (p.life <= 0 || p.size <= 0 || p.y > GAME_H + p.size) {
-          particles.splice(i, 1);
+    class Powerup {
+      constructor(x, y, type) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.width = 20;
+        this.height = 20;
+        this.rotation = Math.random() * 360;
+      }
+      update() {
+        this.y += 2;
+        this.rotation += 3;
+      }
+      render(container) {
+        const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        group.setAttributeNS(null, 'transform', `translate(${this.x}, ${this.y}) rotate(${this.rotation})`);
+        let powerupShape;
+        switch (this.type) {
+          case 'shield':
+            powerupShape = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+            powerupShape.setAttributeNS(null, 'points', '10,0 20,5 20,15 10,20 0,15 0,5');
+            powerupShape.setAttributeNS(null, 'fill', 'var(--c64-bright-cyan)');
+            powerupShape.classList.add('powerup', 'shield-powerup');
+            break;
+          case 'extra-life':
+            powerupShape = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            powerupShape.setAttributeNS(null, 'd', 'M10,5 Q15,0 20,5 A5,5 0 0,1 10,15 Q0,10 10,5');
+            powerupShape.setAttributeNS(null, 'fill', 'var(--c64-bright-red)');
+            powerupShape.classList.add('powerup', 'life-powerup');
+            break;
+          case 'rapid-fire':
+            powerupShape = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            powerupShape.setAttributeNS(null, 'd', 'M10,0 L15,10 L8,12 L16,20 L10,12 L5,10 Z');
+            powerupShape.setAttributeNS(null, 'fill', 'var(--c64-bright-green)');
+            powerupShape.classList.add('powerup', 'rapid-fire-powerup');
+            break;
+        }
+        group.appendChild(powerupShape);
+        container.appendChild(group);
+      }
+    }
+    class Game {
+      constructor() {
+        this.gameElements = document.getElementById('gameElements');
+        this.player = new Player();
+        this.bullets = [];
+        this.alienBullets = [];
+        this.aliens = [];
+        this.boss = null;
+        this.score = 0;
+        this.lives = 3;
+        this.gameStarted = false;
+        this.keys = {};
+        this.wave = 1;
+        this.explosions = [];
+        this.powerups = [];
+        this.shieldActive = false;
+        this.shieldEndTime = 0;
+        this.gameOverScreen = document.getElementById('gameOverScreen');
+        this.sounds = new SoundEffects();
+        this.previousLives = this.lives;
+        this.setupEventListeners();
+        this.createAliens();
+        this.updateScore();
+        this.updateLives();
+      }
+      reset() {
+        this.player = new Player();
+        this.bullets = [];
+        this.alienBullets = [];
+        this.aliens = [];
+        this.boss = null;
+        this.score = 0;
+        this.lives = 3;
+        this.wave = 1;
+        this.explosions = [];
+        this.powerups = [];
+        this.updateScore();
+        this.updateLives();
+        this.createAliens();
+        this.gameOverScreen.style.display = 'none';
+        this.previousLives = this.lives;
+      }
+      setupEventListeners() {
+        document.addEventListener('keydown', e => {
+          this.keys[e.code] = true;
+          if (e.code === 'Space') {
+            if (!this.gameStarted) {
+              if (document.getElementById('gameOverScreen').style.display === 'block') {
+                this.reset();
+              }
+              this.startGame();
+            }
+          }
+        });
+        document.addEventListener('keyup', e => {
+          this.keys[e.code] = false;
+        });
+      }
+      startGame() {
+        this.gameStarted = true;
+        document.getElementById('startScreen').style.display = 'none';
+        this.gameOverScreen.style.display = 'none';
+        this.gameLoop();
+      }
+      createAliens() {
+        const formationWidth = 8;
+        const formationHeight = 5;
+        const spacing = 40;
+        for (let row = 0; row < formationHeight; row++) {
+          for (let col = 0; col < formationWidth; col++) {
+            const isLeader = row === 0;
+            const x = GAME_WIDTH / 2 - formationWidth * spacing / 2 + col * spacing;
+            const y = 80 + row * spacing;
+            const alienType = Math.floor(Math.random() * 3) + 1;
+            this.aliens.push(new Alien(x, y, isLeader, alienType));
+          }
+        }
+        if (this.wave % BOSS_WAVE_INTERVAL === 0) {
+          this.boss = new Boss(GAME_WIDTH / 2, 50, this.wave);
+        }
+      }
+      checkCollision(bullet, target) {
+        if (this.shieldActive && target === this.player) {
+          return false;
+        }
+        if (!bullet || !target) return false;
+        if (!Number.isFinite(bullet.x) || !Number.isFinite(bullet.y) || !Number.isFinite(target.x) || !Number.isFinite(target.y)) {
+          return false;
+        }
+        return bullet.x < target.x + 20 && bullet.x + 2 > target.x && bullet.y < target.y + 20 && bullet.y + 10 > target.y;
+      }
+      checkPlayerPowerupCollision(powerup, player) {
+        if (!powerup || !player) return false;
+        return powerup.x < player.x + 24 &&
+          powerup.x + 20 > player.x &&
+          powerup.y < player.y + 24 &&
+          powerup.y + 20 > player.y;
+      }
+      update() {
+        if (!this.gameStarted) return;
+        if (this.keys['ArrowLeft']) this.player.moveLeft();
+        if (this.keys['ArrowRight']) this.player.moveRight();
+        if (this.keys['Space']) this.player.shoot(this);
+        this.bullets = (this.bullets || []).filter(bullet => {
+          if (!bullet) return false;
+          bullet.update();
+          if (this.boss) {
+            if (this.checkCollision(bullet, this.boss)) {
+              this.boss.health--;
+              for (let i = 0; i < 3; i++) {
+                this.explosions.push(new BossHitParticles(bullet.x + (Math.random() * 20 - 10), bullet.y + (Math.random() * 20 - 10)));
+              }
+              if (this.boss.health <= 0) {
+                for (let i = 0; i < 5; i++) {
+                  setTimeout(() => {
+                    if (this.boss) {
+                      this.explosions.push(new BossExplosion(this.boss.x + 15 + (Math.random() * 40 - 20), this.boss.y + 15 + (Math.random() * 40 - 20)));
+                    }
+                  }, i * 100);
+                }
+                this.boss = null;
+                this.score += 1000;
+                this.updateScore();
+                this.sounds.playExplosion();
+              }
+              return false;
+            }
+          }
+          return bullet.y >= 0;
+        });
+        this.alienBullets = (this.alienBullets || []).filter(bullet => {
+          if (!bullet) return false;
+          bullet.update();
+          if (bullet.y > GAME_HEIGHT) return false;
+          if (this.checkCollision(bullet, this.player)) {
+            this.lives--;
+            this.updateLives();
+            this.explosions.push(new Explosion(this.player.x + 12, this.player.y + 10));
+            if (this.lives <= 0) {
+              this.gameStarted = false;
+              this.gameOverScreen.style.display = 'block';
+              return false;
+            }
+            return false;
+          }
+          return true;
+        });
+        const survivingAliens = [];
+        this.aliens.forEach(alien => {
+          if (!alien) return;
+          alien.update();
+          if (!alien.isDiving && Math.random() < DIVE_CHANCE) {
+            alien.startDiving();
+          }
+          if (Math.random() < ALIEN_SHOOT_CHANCE) {
+            this.alienBullets.push(new AlienBullet(alien.x + 10, alien.y + 20));
+          }
+          let alienHit = false;
+          this.bullets = this.bullets.filter(bullet => {
+            if (!bullet || alienHit) return true;
+            if (this.checkCollision(bullet, alien)) {
+              alienHit = true;
+              this.score += alien.isLeader ? 150 : 100;
+              this.updateScore();
+              this.explosions.push(new Explosion(alien.x + 10, alien.y + 10));
+              this.sounds.playExplosion();
+              return false;
+            }
+            return true;
+          });
+          if (!alienHit) {
+            survivingAliens.push(alien);
+          }
+        });
+        this.aliens = survivingAliens;
+        if (this.boss) {
+          this.boss.update(this);
+          if (Math.random() < ALIEN_SHOOT_CHANCE * 2) {
+            if (!this.boss.specialAttackActive) {
+              this.alienBullets.push(new AlienBullet(this.boss.x + 15, this.boss.y + 30));
+            }
+          }
+        }
+        if (this.aliens.length === 0 && !this.boss) {
+          this.wave++;
+          this.createAliens();
+        }
+        this.updateAlienFormation();
+        this.explosions = this.explosions.filter(explosion => explosion.update());
+        if (Math.random() < POWERUP_SPAWN_CHANCE) {
+          const x = Math.random() * (GAME_WIDTH - 20);
+          const powerupTypes = ['shield', 'extra-life', 'rapid-fire'];
+          const type = powerupTypes[Math.floor(Math.random() * powerupTypes.length)];
+          this.powerups.push(new Powerup(x, 0, type));
+        }
+        this.powerups = this.powerups.filter(powerup => {
+          powerup.update();
+          if (this.checkPlayerPowerupCollision(powerup, this.player)) {
+            this.collectPowerup(powerup);
+            return false;
+          }
+          return powerup.y < GAME_HEIGHT;
+        });
+        if (this.shieldActive && Date.now() > this.shieldEndTime) {
+          this.shieldActive = false;
+        }
+        this.render();
+      }
+      collectPowerup(powerup) {
+        switch (powerup.type) {
+          case 'shield':
+            this.activateShield();
+            break;
+          case 'extra-life':
+            this.lives = Math.min(this.lives + 1, 5);
+            this.updateLives();
+            break;
+          case 'rapid-fire':
+            this.player.rapidFireActive = true;
+            setTimeout(() => {
+              this.player.rapidFireActive = false;
+            }, 5000);
+            break;
+        }
+        this.sounds.playPowerupCollect();
+      }
+      activateShield() {
+        this.shieldActive = true;
+        this.shieldEndTime = Date.now() + SHIELD_DURATION;
+      }
+      updateAlienFormation() {
+        if (Math.random() < 0.0008) {
+          const leaders = this.aliens.filter(alien => alien.isLeader);
+          const groupSize = Math.floor(Math.random() * 3) + 1;
+          for (let i = 0; i < groupSize && i < leaders.length; i++) {
+            setTimeout(() => {
+              if (leaders[i] && !leaders[i].isDiving) {
+                leaders[i].startDiving();
+              }
+            }, i * 200);
+          }
+        }
+      }
+      updateScore() {
+        document.getElementById('scoreValue').textContent = this.score;
+      }
+      updateLives() {
+        document.getElementById('livesValue').textContent = this.lives;
+        if (this.lives < this.previousLives) {
+          this.sounds.playLifeLoss();
+        }
+        this.previousLives = this.lives;
+      }
+      render() {
+        this.gameElements.innerHTML = '';
+        if (this.player) this.player.render(this.gameElements);
+        this.bullets.forEach(bullet => {
+          if (bullet) bullet.render(this.gameElements);
+        });
+        this.alienBullets.forEach(bullet => {
+          if (bullet) bullet.render(this.gameElements);
+        });
+        this.aliens.forEach(alien => {
+          if (alien) alien.render(this.gameElements);
+        });
+        if (this.boss) this.boss.render(this.gameElements);
+        this.explosions.forEach(explosion => {
+          if (explosion) explosion.render(this.gameElements);
+        });
+        this.powerups.forEach(powerup => {
+          powerup.render(this.gameElements);
+        });
+        if (this.shieldActive) {
+          const shield = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          shield.setAttributeNS(null, 'cx', this.player.x + 15);
+          shield.setAttributeNS(null, 'cy', this.player.y + 15);
+          shield.setAttributeNS(null, 'r', '30');
+          shield.classList.add('shield');
+          this.gameElements.appendChild(shield);
+        }
+      }
+      gameLoop() {
+        if (!this.gameStarted) return;
+        this.update();
+        requestAnimationFrame(() => this.gameLoop());
+      }
+    }
+    class Player {
+      constructor() {
+        this.x = GAME_WIDTH / 2;
+        this.y = GAME_HEIGHT - 50;
+        this.lastShot = 0;
+        this.isExploding = false;
+        this.rapidFireActive = false;
+      }
+      moveLeft() {
+        if (this.x > 0) this.x -= PLAYER_SPEED;
+      }
+      moveRight() {
+        if (this.x < GAME_WIDTH - 30) this.x += PLAYER_SPEED;
+      }
+      shoot(game) {
+        const now = Date.now();
+        const shootDelay = this.rapidFireActive ? 100 : 250;
+        if (now - this.lastShot > shootDelay) {
+          game.bullets.push(new Bullet(this.x + 10, this.y));
+          game.sounds.playShoot();
+          this.lastShot = now;
+        }
+      }
+      render(container) {
+        if (!this.isExploding) {
+          const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+          use.setAttributeNS(null, 'href', '#playerPath');
+          use.setAttributeNS(null, 'x', this.x);
+          use.setAttributeNS(null, 'y', this.y);
+          use.classList.add('player');
+          container.appendChild(use);
         }
       }
     }
-    document.addEventListener("keydown", function(e) {
-      if (e.key == "ArrowRight") rightPressed = true;
-      else if (e.key == "ArrowLeft") leftPressed = true;
-      else if ((e.key == " " || e.key == "Spacebar") && !ball.moving && !gameOver) {
-        ball.moving = true;
-        initAudio();
-        document.body.classList.add('no-cursor');
+    class Bullet {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
       }
-    });
-    document.addEventListener("keyup", function(e) {
-      if (e.key == "ArrowRight") rightPressed = false;
-      else if (e.key == "ArrowLeft") leftPressed = false;
-    });
-    svg.addEventListener("pointermove", e => {
-      let rect = svg.getBoundingClientRect();
-      let px = ((e.clientX - rect.left) / rect.width) * GAME_W;
-      let mappedPx = px;
-      let paddleCenter = mappedPx;
-      let newPaddleX = paddleCenter - paddle.w / 2;
-      paddle.x = Math.max(BOUNDS_X_MIN, Math.min(BOUNDS_X_MAX - paddle.w, newPaddleX));
-      if (!ball.moving) {
-        ball.x = paddle.x + paddle.w / 2 - BALL_SIZE / 2;
+      update() {
+        this.y -= BULLET_SPEED;
       }
-    });
-    svg.addEventListener("pointerdown", e => {
-      initAudio();
-      if (!ball.moving && !gameOver) {
-        ball.moving = true;
-        document.body.classList.add('no-cursor');
+      render(container) {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttributeNS(null, 'x', this.x);
+        rect.setAttributeNS(null, 'y', this.y);
+        rect.setAttributeNS(null, 'width', '3');
+        rect.setAttributeNS(null, 'height', '12');
+        rect.classList.add('bullet');
+        container.appendChild(rect);
       }
-    });
-
-    function showGameOver(win) {
-      if (win && currentLevel < LEVELS.length - 1) {
-        currentLevel++;
-        document.getElementById('game').classList.add('level-transition');
-        setTimeout(() => {
-          document.getElementById('game').classList.remove('level-transition');
-        }, 500);
-        resetBricks();
-        resetPaddleBall();
-        fallingBonuses.length = 0;
-        activeBonusTexts.length = 0;
-        particles.length = 0;
-        gameOver = false;
-        ball.moving = false;
-        lastLevel = currentLevel;
-        updateScoreboard();
-        draw();
-        requestAnimationFrame(tick);
-        document.body.classList.remove('no-cursor');
-        return;
-      }
-      let g = document.createElementNS(SVG_NS, 'g');
-      g.setAttribute('data-game-over', 'true');
-      let bg = document.createElementNS(SVG_NS, 'rect');
-      bg.setAttribute('x', 40);
-      bg.setAttribute('y', 140);
-      bg.setAttribute('width', GAME_W - 80);
-      bg.setAttribute('height', 200);
-      bg.setAttribute('fill', 'var(--c64-darkblue)');
-      bg.setAttribute('stroke', 'var(--c64-yellow)');
-      bg.setAttribute('stroke-width', 4);
-      bg.setAttribute('rx', 15);
-      bg.setAttribute('filter', 'url(#shadow)');
-      g.appendChild(bg);
-      let scanlines = document.createElementNS(SVG_NS, 'rect');
-      scanlines.setAttribute('x', 40);
-      scanlines.setAttribute('y', 140);
-      scanlines.setAttribute('width', GAME_W - 80);
-      scanlines.setAttribute('height', 200);
-      scanlines.setAttribute('fill', 'url(#scanline-pattern)');
-      scanlines.setAttribute('opacity', '0.2');
-      scanlines.setAttribute('pointer-events', 'none');
-      g.appendChild(scanlines);
-      let txt1 = document.createElementNS(SVG_NS, 'text');
-      txt1.setAttribute('x', GAME_W / 2);
-      txt1.setAttribute('y', 220);
-      txt1.setAttribute('text-anchor', 'middle');
-      txt1.setAttribute('font-size', "3em");
-      txt1.setAttribute('font-family', 'VT323, monospace');
-      txt1.setAttribute('fill', win ? 'var(--c64-brick-green)' : 'var(--c64-brick-red)');
-      txt1.setAttribute('stroke', 'var(--c64-yellow)');
-      txt1.setAttribute('stroke-width', 1);
-      txt1.setAttribute('text-rendering', 'optimizeLegibility');
-      txt1.setAttribute('filter', 'url(#glitch-filter)');
-      txt1.textContent = win ? 'VICTORY!' : 'GAME OVER';
-      g.appendChild(txt1);
-      let txt2 = document.createElementNS(SVG_NS, 'text');
-      txt2.setAttribute('x', GAME_W / 2);
-      txt2.setAttribute('y', 270);
-      txt2.setAttribute('text-anchor', 'middle');
-      txt2.setAttribute('font-size', "1.5em");
-      txt2.setAttribute('font-family', 'VT323, monospace');
-      txt2.setAttribute('fill', 'var(--c64-yellow)');
-      txt2.textContent = win ?
-        `You destroyed all the bricks!` :
-        `Your score: ${score}`;
-      g.appendChild(txt2);
-      let defs = svg.querySelector('defs') || document.createElementNS(SVG_NS, 'defs');
-      svg.appendChild(defs);
-      let shadowFilter = document.createElementNS(SVG_NS, 'filter');
-      shadowFilter.id = 'shadow';
-      shadowFilter.setAttribute('x', '-20%');
-      shadowFilter.setAttribute('y', '-20%');
-      shadowFilter.setAttribute('width', '140%');
-      shadowFilter.setAttribute('height', '140%');
-      let feDropShadow = document.createElementNS(SVG_NS, 'feDropShadow');
-      feDropShadow.setAttribute('dx', '4');
-      feDropShadow.setAttribute('dy', '4');
-      feDropShadow.setAttribute('stdDeviation', '5');
-      feDropShadow.setAttribute('flood-color', 'rgba(0,0,0,0.5)');
-      shadowFilter.appendChild(feDropShadow);
-      defs.appendChild(shadowFilter);
-      let glitchFilter = document.createElementNS(SVG_NS, 'filter');
-      glitchFilter.id = 'glitch-filter';
-      let feTurbulence = document.createElementNS(SVG_NS, 'feTurbulence');
-      feTurbulence.setAttribute('type', 'fractalNoise');
-      feTurbulence.setAttribute('baseFrequency', '0.05');
-      feTurbulence.setAttribute('numOctaves', '3');
-      feTurbulence.setAttribute('result', 'turbulence');
-      glitchFilter.appendChild(feTurbulence);
-      let feDisplacementMap = document.createElementNS(SVG_NS, 'feDisplacementMap');
-      feDisplacementMap.setAttribute('in', 'SourceGraphic');
-      feDisplacementMap.setAttribute('in2', 'turbulence');
-      feDisplacementMap.setAttribute('scale', '3');
-      feDisplacementMap.setAttribute('xChannelSelector', 'R');
-      feDisplacementMap.setAttribute('yChannelSelector', 'G');
-      glitchFilter.appendChild(feDisplacementMap);
-      defs.appendChild(glitchFilter);
-      let pattern = document.createElementNS(SVG_NS, 'pattern');
-      pattern.id = 'scanline-pattern';
-      pattern.setAttribute('patternUnits', 'userSpaceOnUse');
-      pattern.setAttribute('width', '4');
-      pattern.setAttribute('height', '4');
-      let patternRect = document.createElementNS(SVG_NS, 'rect');
-      patternRect.setAttribute('width', '4');
-      patternRect.setAttribute('height', '1');
-      patternRect.setAttribute('fill', 'var(--c64-white)');
-      patternRect.setAttribute('opacity', '0.1');
-      pattern.appendChild(patternRect);
-      defs.appendChild(pattern);
-      svg.appendChild(g);
-      restartBtn.style.display = '';
-      document.body.classList.remove('no-cursor');
     }
-
-    function updateFallingBonuses() {
-      for (let i = fallingBonuses.length - 1; i >= 0; i--) {
-        let bonus = fallingBonuses[i];
-        bonus.y += 3;
-        if (
-          bonus.y + BRICK_H / 4 >= PADDLE_Y &&
-          bonus.y + BRICK_H / 4 <= PADDLE_Y + PADDLE_H &&
-          bonus.x + BRICK_W / 2 >= paddle.x &&
-          bonus.x + BRICK_W / 2 <= paddle.x + paddle.w
-        ) {
-          const gameState = {
-            score: score,
-            lives: lives,
-            paddleX: paddle.x,
-            paddleW: paddle.w
-          };
-          bonus.effect(gameState);
-          score = gameState.score;
-          lives = gameState.lives;
-          fallingBonuses.splice(i, 1);
-        } else if (bonus.y > GAME_H) {
-          fallingBonuses.splice(i, 1);
+    class AlienBullet extends Bullet {
+      render(container) {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttributeNS(null, 'x', this.x);
+        rect.setAttributeNS(null, 'y', this.y);
+        rect.setAttributeNS(null, 'width', '3');
+        rect.setAttributeNS(null, 'height', '12');
+        rect.classList.add('alien-bullet');
+        container.appendChild(rect);
+      }
+      update() {
+        this.y += BULLET_SPEED;
+      }
+    }
+    class Alien {
+      constructor(x, y, isLeader, type) {
+        this.x = x;
+        this.y = y;
+        this.direction = 1;
+        this.originalX = x;
+        this.originalY = y;
+        this.isDiving = false;
+        this.diveProgress = 0;
+        this.isLeader = isLeader;
+        this.divePattern = Math.floor(Math.random() * 3);
+        this.isReturning = false;
+        this.returnProgress = 0;
+        this.type = type;
+      }
+      startDiving() {
+        if (!this.isDiving) {
+          this.isDiving = true;
+          this.diveProgress = 0;
         }
       }
-    }
-
-    function drawBonusTexts() {
-      for (const textInfo of activeBonusTexts) {
-        let bonusText = document.createElementNS(SVG_NS, 'text');
-        bonusText.setAttribute('x', textInfo.x);
-        bonusText.setAttribute('y', textInfo.y);
-        bonusText.setAttribute('text-anchor', 'middle');
-        bonusText.setAttribute('font-family', 'VT323, monospace');
-        bonusText.setAttribute('font-size', '1.5em');
-        switch (textInfo.type) {
-          case 'life':
-            bonusText.textContent = '+1 LIFE';
-            bonusText.setAttribute('fill', 'var(--c64-bonus-purple)');
-            break;
-          case 'score':
-            bonusText.textContent = '+2000 PTS';
-            bonusText.setAttribute('fill', 'var(--c64-bonus-gold)');
-            break;
-          case 'paddle':
-            bonusText.textContent = 'LARGE PADDLE';
-            bonusText.setAttribute('fill', 'var(--c64-lightblue)');
-            break;
+      update() {
+        if (!this.isDiving && !this.isReturning) {
+          this.x += ALIEN_SPEED * this.direction;
+          if (Math.abs(this.x - this.originalX) > 30) {
+            this.direction *= -1;
+            this.y += 5;
+          }
         }
-        svg.appendChild(bonusText);
+        if (this.isDiving) {
+          if (!this.diveProgress) this.diveProgress = 0;
+          this.diveProgress += 0.01;
+          if (this.divePattern === undefined) {
+            this.divePattern = Math.floor(Math.random() * 3);
+          }
+          switch (this.divePattern) {
+            case 0:
+              this.x = this.originalX + Math.sin(this.diveProgress * Math.PI * 2) * 200;
+              this.y = this.originalY + Math.pow(this.diveProgress, 1.5) * 800;
+              break;
+            case 1:
+              this.x = this.originalX + Math.sin(this.diveProgress * Math.PI * 4) * 150;
+              this.y = this.originalY + Math.sin(this.diveProgress * Math.PI * 2) * 50 + this.diveProgress * 800;
+              break;
+            case 2:
+              this.x = this.originalX + Math.cos(this.diveProgress * Math.PI * 3) * (150 * (1 - this.diveProgress));
+              this.y = this.originalY + Math.sin(this.diveProgress * Math.PI * 3) * (150 * (1 - this.diveProgress)) + this.diveProgress * 800;
+              break;
+          }
+          if (this.diveProgress >= 1) {
+            this.y = -30;
+            this.isDiving = false;
+            this.diveProgress = 0;
+            this.returnToFormation();
+          }
+        }
+      }
+      render(container) {
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttributeNS(null, 'href', this.type === 1 ? '#alienPath1' : this.type === 2 ? '#alienPath2' : '#alienPath3');
+        use.setAttributeNS(null, 'x', this.x);
+        use.setAttributeNS(null, 'y', this.y);
+        use.classList.add('alien');
+        if (this.isDiving) {
+          use.classList.add('diving');
+          use.style.transform = `rotate(${this.diveProgress * 180}deg)`;
+        }
+        if (this.isReturning) {
+          use.classList.add('returning');
+        }
+        container.appendChild(use);
+      }
+      returnToFormation() {
+        this.isReturning = true;
+        this.returnProgress = 0;
+        const returnInterval = setInterval(() => {
+          this.returnProgress += 0.02;
+          this.x = this.x + (this.originalX - this.x) * 0.05;
+          this.y = this.y + (this.originalY - this.y) * 0.05;
+          if (this.returnProgress >= 1) {
+            this.isReturning = false;
+            this.x = this.originalX;
+            this.y = this.originalY;
+            clearInterval(returnInterval);
+          }
+        }, 16);
       }
     }
-
-    function updateBonusTexts() {
-      const currentTime = Date.now();
-      activeBonusTexts = activeBonusTexts.filter(textInfo => {
-        return currentTime - textInfo.startTime < BONUS_TEXT_DURATION;
-      });
-    }
-
-    function updateScoreboard() {
-      scoreEl.innerText = 'SCORE: ' + score.toString().padStart(5, '0');
-      if (lives !== lastLives) {
-        livesEl.innerText = 'LIVES: ' + lives;
-        livesEl.classList.add('life-change');
-        setTimeout(() => {
-          livesEl.classList.remove('life-change');
-        }, 300);
-        lastLives = lives;
-      } else {
-        livesEl.innerText = 'LIVES: ' + lives;
+    class Boss {
+      constructor(x, y, wave) {
+        this.x = x;
+        this.y = y;
+        this.direction = 1;
+        this.health = 5 + Math.floor(wave * 1.5);
+        this.wave = wave;
+        this.bulletPattern = 0;
+        this.specialAttackCooldown = 0;
+        this.specialAttackActive = false;
       }
-      if (currentLevel !== lastLevel) {
-        levelEl.innerText = `LEVEL: ${currentLevel + 1}`;
-        levelEl.classList.add('level-change');
-        setTimeout(() => {
-          levelEl.classList.remove('level-change');
-        }, 400);
-        lastLevel = currentLevel;
-      } else {
-        levelEl.innerText = `LEVEL: ${currentLevel + 1}`;
+      update(game) {
+        const bossSpeed = ALIEN_SPEED * (1 + this.wave * 0.1);
+        this.x += bossSpeed * this.direction;
+        this.y += Math.sin(Date.now() / 1000) * 0.8;
+        if (this.x <= 0 || this.x >= GAME_WIDTH - 30) {
+          this.direction *= -1;
+        }
+        this.specialAttackCooldown++;
+        if (this.specialAttackCooldown > 300 && !this.specialAttackActive) {
+          this.activateSpecialAttack();
+        }
+        if (this.specialAttackActive) {
+          this.performSpecialAttack(game);
+        }
+        this.bulletPattern = (this.bulletPattern + 1) % 3;
+      }
+      activateSpecialAttack() {
+        this.specialAttackActive = true;
+        this.specialAttackCooldown = 0;
+      }
+      performSpecialAttack(game) {
+        if (this.specialAttackCooldown % 10 === 0) {
+          for (let i = 0; i < 12; i++) {
+            const angle = (i * 30 * Math.PI) / 180;
+            const bulletSpeed = 3;
+            const bulletX = this.x + 15 + Math.cos(angle) * 20;
+            const bulletY = this.y + 30 + Math.sin(angle) * 20;
+            game.alienBullets.push(new SpecialBossBullet(bulletX, bulletY, angle));
+          }
+        }
+        if (this.specialAttackCooldown > 100) {
+          this.specialAttackActive = false;
+          this.specialAttackCooldown = 0;
+        }
+      }
+      render(container) {
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttributeNS(null, 'href', '#bossPath');
+        use.setAttributeNS(null, 'x', this.x);
+        use.setAttributeNS(null, 'y', this.y);
+        use.classList.add('boss');
+        if (this.health < Math.floor(this.wave * 1.5 / 2)) {
+          use.classList.add('boss-warning');
+        }
+        if (this.specialAttackActive) {
+          use.classList.add('boss-special-attack');
+        }
+        container.appendChild(use);
       }
     }
-
-    function draw() {
-      clearSVG();
-      drawBricks();
-      drawPaddle();
-      drawBall();
-      drawFallingBonuses();
-      drawBonusTexts();
-      drawParticles();
+    class SpecialBossBullet extends AlienBullet {
+      constructor(x, y, angle) {
+        super(x, y);
+        this.angle = angle;
+        this.speed = 3;
+      }
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+      }
+      render(container) {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttributeNS(null, 'x', this.x);
+        rect.setAttributeNS(null, 'y', this.y);
+        rect.setAttributeNS(null, 'width', '4');
+        rect.setAttributeNS(null, 'height', '10');
+        rect.classList.add('boss-special-bullet');
+        container.appendChild(rect);
+      }
     }
-    resetAll();
-    draw();
-    requestAnimationFrame(tick);
-    restartBtn.addEventListener('click', () => {
-      resetAll();
-      draw();
-      requestAnimationFrame(tick);
-      document.body.classList.remove('no-cursor');
-    });
+    class BossHitParticles {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.particles = [];
+        this.lifetime = 0;
+        this.maxLifetime = 30;
+        const colors = [
+          'var(--c64-bright-red)',
+          'var(--c64-bright-blue)',
+          'var(--c64-bright-cyan)',
+          'var(--c64-orange)',
+          'var(--c64-yellow)'
+        ];
+        for (let i = 0; i < 12; i++) {
+          const angle = Math.PI * 2 * i / 12 + Math.random() * 0.5;
+          const speed = 2 + Math.random() * 3;
+          this.particles.push({
+            x: 0,
+            y: 0,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: 3 + Math.random() * 4,
+            color: colors[Math.floor(Math.random() * colors.length)]
+          });
+        }
+      }
+      update() {
+        this.lifetime++;
+        this.particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+        });
+        return this.lifetime < this.maxLifetime;
+      }
+      render(container) {
+        const opacity = 1 - this.lifetime / this.maxLifetime;
+        this.particles.forEach(p => {
+          const particle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          particle.setAttributeNS(null, 'x', this.x + p.x);
+          particle.setAttributeNS(null, 'y', this.y + p.y);
+          particle.setAttributeNS(null, 'width', p.size);
+          particle.setAttributeNS(null, 'height', p.size);
+          particle.setAttributeNS(null, 'opacity', opacity);
+          particle.setAttributeNS(null, 'fill', p.color);
+          particle.classList.add('boss-hit-particle');
+          container.appendChild(particle);
+        });
+      }
+    }
+    class BossExplosion {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.particles = [];
+        this.lifetime = 0;
+        this.maxLifetime = 90;
+        for (let i = 0; i < 40; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 3 + Math.random() * 5;
+          this.particles.push({
+            x: 0,
+            y: 0,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: 4 + Math.random() * 6,
+            rot: Math.random() * 360
+          });
+        }
+      }
+      update() {
+        this.lifetime++;
+        this.particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rot += 5;
+        });
+        return this.lifetime < this.maxLifetime;
+      }
+      render(container) {
+        const opacity = 1 - this.lifetime / this.maxLifetime;
+        this.particles.forEach(p => {
+          const particle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          particle.setAttributeNS(null, 'x', this.x + p.x);
+          particle.setAttributeNS(null, 'y', this.y + p.y);
+          particle.setAttributeNS(null, 'width', p.size);
+          particle.setAttributeNS(null, 'height', p.size);
+          particle.setAttributeNS(null, 'opacity', opacity);
+          particle.setAttributeNS(null, 'transform', `rotate(${p.rot} ${this.x + p.x + p.size / 2} ${this.y + p.y + p.size / 2})`);
+          particle.classList.add('boss-explosion-particle');
+          container.appendChild(particle);
+        });
+      }
+    }
+    const game = new Game();
   </script>
 </body>
 
